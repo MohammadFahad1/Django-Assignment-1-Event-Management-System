@@ -1,15 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
     <title>Category Form</title>
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Submit">
-    </form>
+    <div class="max-w-[700px] my-8 mx-auto block border-green-500 border-2 p-8">
+        <form method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </body>
 </html>
