@@ -11,3 +11,9 @@ class EventModelForm(forms.ModelForm):
     class Meta:
         model = Event
         exclude = []
+
+
+class ParticipantModelForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        exclude = []
