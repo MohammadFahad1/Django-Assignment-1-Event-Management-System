@@ -17,3 +17,6 @@ class ParticipantModelForm(forms.ModelForm):
     class Meta:
         model = Participant
         exclude = []
+        widgets = {
+            'event': forms.CheckboxSelectMultiple(attrs={'class': 'border-2 border-gray-500'})
+        }

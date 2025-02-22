@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <title>Participant Form</title>
+</head>
+<body>
+    <div class="max-w-[700px] my-8 mx-auto block border-green-500 border-2 p-8">
+        <form method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="Submit" class="bg-rose-500 p-3 text-slate-100 rounded hover:bg-rose-400 cursor-pointer">
+        </form>
+    </div>
+</body>
+</html>
