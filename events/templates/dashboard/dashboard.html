@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <title>Organizer Dashboard</title>
+</head>
+<body class="bg-gray-900">
+    <div class="min-h-screen max-w-7xl mx-auto px-5">
+        {% comment %} Header Section Starts {% endcomment %}
+         <header class="mt-3">
+            <nav class="text-slate-50 flex flex-col justify-between items-center md:justify-between md:flex-row">
+                {% comment %} Logo {% endcomment %}
+                 <a href="/"><div class="text-2xl p-2 bg-[#FA00D5] rounded-lg font-bold">Organizer Dashboard</div></a>
+
+                 {% comment %} Navbar Links {% endcomment %}
+                  <div class="py-3 text-lg flex gap-5">
+                    <a href="/" class="hover:text-[#FA00D5]">Home</a>
+                    <a href="/" class="hover:text-[#FA00D5]">Events</a>
+                    <a href="/" class="hover:text-[#FA00D5]">Dashboard</a>
+                  </div>
+            </nav>
+         </header>
+        {% comment %} Header Section Ends {% endcomment %}
+    </div>
+</body>
+</html>
