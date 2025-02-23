@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "css/output.css" %}">
-    <title>Organizer Dashboard</title>
+    <title>Event Management System</title>
 </head>
 <body class="bg-black">
     <div class="min-h-screen w-full max-w-7xl mx-auto px-5">
@@ -13,13 +13,14 @@
          <header class="mt-3">
             <nav class="text-slate-50 flex flex-col justify-between items-center md:justify-between md:flex-row">
                 {% comment %} Logo {% endcomment %}
-                 <a href="/"><div class="text-2xl p-2 bg-[#FA00D5] rounded-lg font-bold">Organizer Dashboard</div></a>
+                 <a href="/"><div class="text-2xl p-2 bg-[#FA00D5] rounded-lg font-bold">EventMama</div></a>
 
                  {% comment %} Navbar Links {% endcomment %}
                   <div class="py-3 text-sm flex items-center justify-center gap-5 flex-wrap">
-                    <form action="" method="get" class="w-full md:w-auto mx-auto">
+                    <form action="" method="get" class="w-full md:w-auto mx-auto flex items-center justify-center gap-3">
                         {% csrf_token %}
                         <input type="text" name="search" id="search" class="bg-transparent border border-[#FA00D5] px-10 py-2 rounded-lg w-full" placeholder="Search for events">
+                        <input type="submit" value="Search" class="bg-[#FA00D5] p-2 rounded-lg cursor-pointer">
                     </form>
                     <a href="/" class="hover:text-[#FA00D5]">HOME</a>
                     <a href="/" class="hover:text-[#FA00D5]">EVENTS</a>
@@ -57,6 +58,13 @@
                 </div>
             </section>
             {% comment %} Hero Section Ends {% endcomment %}
+
+            {% comment %} List of all Events {% endcomment %}
+             <section class="my-12">
+                <h1 class="text-4xl text-[#FC00D5] text-center font-bold">BEST EVENTS ON EVENTMAMA</h1>
+                {% comment %} <span class="block mx-auto bg-[#FC00D5] h-1 w-[550px]"></span> {% endcomment %}
+             </section>
+            {% comment %} List of all Events {% endcomment %}
         </main>
     </div>
 </body>
