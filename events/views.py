@@ -8,4 +8,4 @@ def home_page(request):
     # form = EventModelForm()
     # if request.method == 'POST':
     #     print(request.POST)
-    return render(request, 'dashboard/dashboard.html')
+    return render(request, 'home_page.html')

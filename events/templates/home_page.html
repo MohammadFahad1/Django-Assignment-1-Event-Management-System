@@ -24,6 +24,7 @@
                     </form>
                     <a href="/" class="hover:text-[#FA00D5]">HOME</a>
                     <a href="#events" class="hover:text-[#FA00D5]">EVENTS</a>
+                    <a href="#contact" class="hover:text-[#FA00D5]">CONTACT US</a>
                     <a href="/" class="hover:text-[#FA00D5]">DASHBOARD</a>
                   </div>
             </nav>
@@ -102,7 +103,59 @@
                 </div>
              </section>
             {% comment %} List of all Events {% endcomment %}
+
+                    {% comment %} Contact Form Section Starts {% endcomment %}
+        <section class="w-full shadow-lg bg-transparent rounded-2xl p-6" id="contact">
+            <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">CONTACT US</h1>
+
+            <form action="#" method="POST" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Name Field -->
+                    <div>
+
+                        <input type="text" placeholder="Enter your name"
+                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <input type="email" placeholder="Enter your email"
+                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                    </div>
+                </div>
+
+                <!-- Subject Field -->
+                <div>
+                    <input type="text" placeholder="Enter subject"
+                        class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                </div>
+
+                <!-- Message Field -->
+                <div>
+                    <textarea rows="8" placeholder="Enter your message"
+                        class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit"
+                        class="w-full text-white font-semibold py-2 border-2 border-[#FC00D5] hover:bg-[#FC00D5] rounded-lg transition duration-300">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </section>
+        {% comment %} Contact Form Section Ends {% endcomment %}
         </main>
+
+        <footer class="text-gray-400 text-center py-6 mt-16">
+            <div class="container mx-auto px-4">
+                <!-- Copyright Text -->
+                <p class="text-sm text-center">
+                    © <span id="year"2025></span> <a href="https://fahadbd.com" class="text-[#FC00D5]">Fahad</a>. All rights reserved.
+                </p>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
