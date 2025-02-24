@@ -12,19 +12,66 @@
     <div class="min-h-screen w-full max-w-7xl mx-auto px-5">
         {% include "header_navbar.html" %}
         <main>
-            <section class="my-10">
+            <section class="my-10 p-10 bg-gray-950">
                 <img src="{% static "images/event1.jpg" %}" class="mx-auto block" alt="">
                 <h2 class="text-slate-100 text-3xl font-bold my-5">Istanbul Wine Party 2018</h2>
-                <div>
-                    <div class="flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 bg-[#FC00D5] p-2 rounded-full">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                        </svg>
+                <div class="flex justify-start gap-3">
+                    <div class="flex items-center justify-start gap-2 p-4 bg-slate-900 min-w-64 rounded">
+                        <div class="bg-[#FC00D5] p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                            </svg>
+                        </div>
 
                         <div>
-                            <p class="text-slate-300">Date</p>
-                            <h4 class="font-bold text-white">26 december 2018</h4>
+                            <p class="text-slate-300 font-bold">Date</p>
+                            <h4 class="font-bold text-white uppercase">26 december 2018</h4>
                         </div>
+                    </div>
+
+                    <div class="flex items-center justify-start gap-2 p-4 bg-slate-900 min-w-64 rounded">
+                        <div class="bg-[#FC00D5] p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+                            </svg>
+                        </div>
+
+                        <div>
+                            <p class="text-slate-300 font-bold">Category</p>
+                            <h4 class="font-bold text-white uppercase">vanila hotal</h4>
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} Event Details {% endcomment %}
+                <p class="text-slate-100 text-justify my-10">{% lorem 9 b random %}</p>
+
+                {% comment %} List of Participants {% endcomment %}
+                <div class="max-w-5xl mx-auto">
+                <h2 class="text-2xl font-bold text-center mb-6 text-[#FC00D5]">Event Participants</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div class="p-4 border rounded-lg shadow-md text-center">
+                            <img src="{% static "images/male-user.png" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
+                            <h3 class="font-semibold text-slate-200">John Doe</h3>
+                            <p class="text-sm text-gray-500">johndoe@example.com</p>
+                        </div>
+                        <div class="p-4 border rounded-lg shadow-md text-center">
+                            <img src="{% static "images/female-user.webp" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
+                            <h3 class="font-semibold text-slate-200">Jane Smith</h3>
+                            <p class="text-sm text-gray-500">janesmith@example.com</p>
+                        </div>
+                        <div class="p-4 border rounded-lg shadow-md text-center">
+                            <img src="{% static "images/female-user.webp" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
+                            <h3 class="font-semibold text-slate-200">Alice Johnson</h3>
+                            <p class="text-sm text-gray-500">alice@example.com</p>
+                        </div>
+                        <div class="p-4 border rounded-lg shadow-md text-center">
+                            <img src="{% static "images/male-user.png" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
+                            <h3 class="font-semibold text-slate-200">Robert Brown</h3>
+                            <p class="text-sm text-gray-500">robert@example.com</p>
+                        </div>
+                        <!-- Add more participants as needed -->
                     </div>
                 </div>
             </section>
