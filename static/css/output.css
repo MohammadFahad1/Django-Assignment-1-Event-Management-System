@@ -683,6 +683,11 @@ video {
   margin-bottom: 2rem;
 }
 
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
 .mt-14 {
   margin-top: 3.5rem;
 }
@@ -724,12 +729,13 @@ video {
   height: 1.25rem;
 }
 
-.h-1 {
-  height: 0.25rem;
+.size-6 {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-.max-h-\[500px\] {
-  max-height: 500px;
+.h-1 {
+  height: 0.25rem;
 }
 
 .max-h-\[400px\] {
@@ -804,6 +810,10 @@ video {
   gap: 2.5rem;
 }
 
+.gap-2 {
+  gap: 0.5rem;
+}
+
 .gap-3 {
   gap: 0.75rem;
 }
@@ -814,10 +824,6 @@ video {
 
 .gap-5 {
   gap: 1.25rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
 }
 
 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
@@ -1005,6 +1011,11 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .font-bold {

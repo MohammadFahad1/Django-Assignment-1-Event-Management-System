@@ -12,9 +12,20 @@
     <div class="min-h-screen w-full max-w-7xl mx-auto px-5">
         {% include "header_navbar.html" %}
         <main>
-            <section>
-                <div class="text-center">
-                    <img src="{% static "images/event1.jpg" %}" class="max-h-[400px]" alt="">
+            <section class="my-10">
+                <img src="{% static "images/event1.jpg" %}" class="mx-auto block" alt="">
+                <h2 class="text-slate-100 text-3xl font-bold my-5">Istanbul Wine Party 2018</h2>
+                <div>
+                    <div class="flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 bg-[#FC00D5] p-2 rounded-full">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                        </svg>
+
+                        <div>
+                            <p class="text-slate-300">Date</p>
+                            <h4 class="font-bold text-white">26 december 2018</h4>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
