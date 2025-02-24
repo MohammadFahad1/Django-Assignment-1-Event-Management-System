@@ -3,9 +3,7 @@ from django.shortcuts import render
 from events.forms import CategoryModelForm, EventModelForm, ParticipantModelForm
 
 def home_page(request):
-    # form = CategoryModelForm()
-    # form = ParticipantModelForm()
-    # form = EventModelForm()
-    # if request.method == 'POST':
-    #     print(request.POST)
     return render(request, 'home_page.html')
+
+def event_detail(request):
+    return render(request, 'event_detail.html')

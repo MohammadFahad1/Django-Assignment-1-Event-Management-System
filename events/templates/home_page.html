@@ -5,32 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <link rel="shortcut icon" href="{% static "images/logo-ev.png" %}" type="image/x-icon">
     <title>Event Management System</title>
 </head>
 <body class="bg-black">
     <div class="min-h-screen w-full max-w-7xl mx-auto px-5">
-        {% comment %} Header Section Starts {% endcomment %}
-         <header class="mt-3 sticky top-0 z-10 bg-black">
-            <nav class="text-slate-50 flex flex-col justify-between items-center md:justify-between md:flex-row sticky top-0 left-0">
-                {% comment %} Logo {% endcomment %}
-                 <a href="/"><div class="text-2xl p-2 bg-[#FA00D5] rounded-lg font-bold">EventMama</div></a>
-
-                 {% comment %} Navbar Links {% endcomment %}
-                  <div class="py-3 text-sm flex items-center justify-center gap-5 flex-wrap">
-                    <form action="" method="get" class="w-full md:w-auto mx-auto flex items-center justify-center gap-3">
-                        {% csrf_token %}
-                        <input type="text" name="search" id="search" class="bg-transparent border border-[#FA00D5] px-10 py-2 rounded-lg w-full" placeholder="Search for events">
-                        <input type="submit" value="Search" class="bg-[#FA00D5] p-2 rounded-lg cursor-pointer">
-                    </form>
-                    <a href="/" class="hover:text-[#FA00D5]">HOME</a>
-                    <a href="#events" class="hover:text-[#FA00D5]">EVENTS</a>
-                    <a href="#contact" class="hover:text-[#FA00D5]">CONTACT US</a>
-                    <a href="/" class="hover:text-[#FA00D5]">DASHBOARD</a>
-                  </div>
-            </nav>
-         </header>
-        {% comment %} Header Section Ends {% endcomment %}
-
+        {% include "header_navbar.html" %}
         <main>
             {% comment %} Hero Section Starts {% endcomment %}
             <section class="grid grid-cols-1 md:grid-cols-2 mt-14 md:mt-0">
@@ -50,7 +30,7 @@
                         
                         <p class="pb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>aliquid ipsam. Vel esse harum rerum.</p>
 
-                        <button class="uppercase text-sm bg-[#FC00D5] hover:bg-[#a1238e] px-5 py-3 font-bold rounded-full">See Details</button>
+                        <a href="#events" class="uppercase text-sm bg-[#FC00D5] hover:bg-[#a1238e] px-5 py-3 font-bold rounded-full">See Events</a>
                     </div>
                 </div>
 
@@ -68,7 +48,7 @@
                     {% comment %} Card Items Starts {% endcomment %}
                     <div class="border-2 border-[#FC00D5] relative top-0 left-0">
                         <img src="{% static "images/event1.jpg" %}" alt="" class="w-full">
-                        <div class="absolute top-4 left-4 bg-[#FC00D5] p-4">
+                        <div class="absolute top-4 left-4 bg-[#FC00D5] p-4 text-center">
                             <h4 class="text-xl font-extrabold">26</h4>
                             <p>JULY</p>
                         </div>
@@ -96,7 +76,7 @@
                                 <span>Manhattan, New York</span>
                             </div>
 
-                            <a href="/" target="_blank" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors">View Details</a>
+                            <a href="/details" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors">View Details</a>
                         </div>
                     </div>
                     {% comment %} Card Item Ends {% endcomment %}
@@ -104,48 +84,49 @@
              </section>
             {% comment %} List of all Events {% endcomment %}
 
-                    {% comment %} Contact Form Section Starts {% endcomment %}
-        <section class="w-full shadow-lg bg-transparent rounded-2xl p-6" id="contact">
-            <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">CONTACT US</h1>
+            {% comment %} Contact Form Section Starts {% endcomment %}
+            <section class="w-full shadow-lg bg-transparent rounded-2xl p-6" id="contact">
+                <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">CONTACT US</h1>
 
-            <form action="#" method="POST" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Name Field -->
+                <form action="" method="POST" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% csrf_token %}
+                        <!-- Name Field -->
+                        <div>
+
+                            <input type="text" placeholder="Enter your name"
+                                class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                        </div>
+
+                        <!-- Email Field -->
+                        <div>
+                            <input type="email" placeholder="Enter your email"
+                                class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                        </div>
+                    </div>
+
+                    <!-- Subject Field -->
                     <div>
-
-                        <input type="text" placeholder="Enter your name"
+                        <input type="text" placeholder="Enter subject"
                             class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
                     </div>
 
-                    <!-- Email Field -->
+                    <!-- Message Field -->
                     <div>
-                        <input type="email" placeholder="Enter your email"
-                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                        <textarea rows="8" placeholder="Enter your message"
+                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]"></textarea>
                     </div>
-                </div>
 
-                <!-- Subject Field -->
-                <div>
-                    <input type="text" placeholder="Enter subject"
-                        class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
-                </div>
-
-                <!-- Message Field -->
-                <div>
-                    <textarea rows="8" placeholder="Enter your message"
-                        class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]"></textarea>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="text-center">
-                    <button type="submit"
-                        class="w-full text-white font-semibold py-2 border-2 border-[#FC00D5] hover:bg-[#FC00D5] rounded-lg transition duration-300">
-                        Send Message
-                    </button>
-                </div>
-            </form>
-        </section>
-        {% comment %} Contact Form Section Ends {% endcomment %}
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit"
+                            class="w-full text-white font-semibold py-2 border-2 border-[#FC00D5] hover:bg-[#FC00D5] rounded-lg transition duration-300">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </section>
+            {% comment %} Contact Form Section Ends {% endcomment %}
         </main>
 
         <footer class="text-gray-400 text-center py-6 mt-16">

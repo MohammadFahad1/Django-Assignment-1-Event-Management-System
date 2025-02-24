@@ -1,0 +1,27 @@
+{% load static %}
+{% comment %} Header Section Starts {% endcomment %}
+    <header class="mt-3 sticky top-0 z-10 bg-black">
+    <nav class="text-slate-50 flex flex-col justify-between items-center md:justify-between md:flex-row sticky top-0 left-0">
+        {% comment %} Logo {% endcomment %}
+            <a href="/">
+            <div class="text-2xl p-2 rounded-lg font-bold flex gap-2 items-center">
+                <img src="{% static "images/logo-ev.png" %}" class="w-14" alt="">
+                <h1>EVMS</h1>
+            </div>
+        </a>
+
+            {% comment %} Navbar Links {% endcomment %}
+            <div class="py-3 text-sm flex items-center justify-center gap-5 flex-wrap">
+            <form action="" method="get" class="w-full md:w-auto mx-auto flex items-center justify-center gap-3">
+                {% csrf_token %}
+                <input type="text" name="search" id="search" class="bg-transparent border border-[#FA00D5] px-10 py-2 rounded-lg w-full" placeholder="Search for events">
+                <input type="submit" value="Search" class="bg-[#FA00D5] p-2 rounded-lg cursor-pointer">
+            </form>
+            <a href="/" class="hover:text-[#FA00D5]">HOME</a>
+            <a href="#events" class="hover:text-[#FA00D5]">EVENTS</a>
+            <a href="#contact" class="hover:text-[#FA00D5]">CONTACT US</a>
+            <a href="/" class="hover:text-[#FA00D5]">DASHBOARD</a>
+            </div>
+    </nav>
+    </header>
+{% comment %} Header Section Ends {% endcomment %}
