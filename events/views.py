@@ -8,6 +8,11 @@ def home_page(request):
 def event_detail(request):
     return render(request, 'event_detail.html')
 
-
 def dashboard(request):
-    return render(request, 'dashboard/dashboard.html')
+    return render(request, 'dashboard/dashboard_home.html')
+
+def events(request):
+    event_form = EventModelForm()
+
+    context = {"form": event_form}
+    return render(request, 'event_form.html', context)

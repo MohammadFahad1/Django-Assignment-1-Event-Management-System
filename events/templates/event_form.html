@@ -1,19 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-    <title>Event Form</title>
-</head>
-<body>
-    <div class="max-w-[700px] my-8 mx-auto block border-green-500 border-2 p-8">
-        <form method="post">
-            {% csrf_token %}
-            {{form}}
-            <input type="submit" value="Submit">
-        </form>
-    </div>
-</body>
-</html>
+{% extends "dashboard/dashboard.html" %}
+
+{% block title %}Events - CRUD{% endblock title %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Submit" class="bg-blue-500 px-5 py-2 rounded text-white cursor-pointer">
+</form>
+{% endblock content %}
