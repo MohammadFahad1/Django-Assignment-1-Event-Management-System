@@ -16,3 +16,15 @@ def events(request):
 
     context = {"form": event_form}
     return render(request, 'event_form.html', context)
+
+def participants(request):
+    participant_form = ParticipantModelForm()
+
+    context = {"form": participant_form}
+    return render(request, 'participant_form.html', context)
+
+def categories(request):
+    category_form = CategoryModelForm()
+
+    context = {"form": category_form}
+    return render(request, 'category_form.html', context)
