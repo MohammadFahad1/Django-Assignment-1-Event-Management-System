@@ -13,7 +13,7 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="event_category")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="event_category", default=1)
 
     def __str__(self):
         return f"{self.name} - {self.date} - {self.time}"

@@ -2,7 +2,15 @@
 
 {% block title %}Events List{% endblock title %}
 {% block content %}
-<h2 class="text-3xl font-bold text-slate-900 my-3">All Events</h2>
+<div class="flex justify-between items-center">
+    <h2 class="text-3xl font-bold text-slate-900 my-3">All Events</h2>
+    <div><a href="?action=add" class="px-3 py-2 bg-rose-500 text-white rounded">Add New Event</a></div>
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="p-3 bg-green-400 text-white">{{message}}</div>
+    {% endfor %}
+{% endif %}
 <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
     <thead class="bg-gray-200">
         <tr>

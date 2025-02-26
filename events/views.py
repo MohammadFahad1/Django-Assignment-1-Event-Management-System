@@ -1,6 +1,7 @@
 from django.shortcuts import render
 # from django.http import HttpResponse
 from events.forms import CategoryModelForm, EventModelForm, ParticipantModelForm
+from django.contrib import messages
 
 def home_page(request):
     return render(request, 'home_page.html')
@@ -13,8 +14,21 @@ def dashboard(request):
 
 def events(request):
     event_form = EventModelForm()
-
-    context = {"form": event_form}
+    action = request.GET.get('action', 'all')
+    if action == 'add':
+        if request.method == 'POST':
+            event_form = EventModelForm(request.POST)
+            if event_form.is_valid():
+                event_form.save()
+                messages.success(request, 'Event added successfully')
+                return render(request, 'dashboard/events_table.html')
+                
+        context = {"form": event_form}
+        return render(request, 'event_form.html', context)
+    elif action == 'edit':
+        event_form = EventModelForm()
+    
+    context = {}
     return render(request, 'dashboard/events_table.html', context)
 
 def participants(request):

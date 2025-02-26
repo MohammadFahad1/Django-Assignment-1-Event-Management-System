@@ -7,15 +7,26 @@ class StyledFormMixin:
     def apply_styled_widgets(self):
         for field_name, field in self.fields.items():
             if isinstance(field.widget, forms.TextInput):
+                if field.label.lower() == 'date':
+                    field.widget.attrs.update({
+                        'class': self.default_classes,
+                        'placeholder': f'YYYY-MM-DD'
+                    })
+                elif field.label.lower() == 'time':
+                    field.widget.attrs.update({
+                        'class': self.default_classes,
+                        'placeholder': f'HH:MM:SS'
+                    })
+                else:
+                    field.widget.attrs.update({
+                        'class': self.default_classes,
+                        'placeholder': f'Enter {field.label.lower()}'
+                    })
+            elif isinstance(field.widget, forms.Textarea):
                 field.widget.attrs.update({
                     'class': self.default_classes,
                     'placeholder': f'Enter {field.label.lower()}',
                     'rows': "5"
-                })
-            elif isinstance(field.widget, forms.Textarea):
-                field.widget.attrs.update({
-                    'class': self.default_classes,
-                    'placeholder': f'Enter {field.label.lower()}'
                 })
             elif isinstance(field.widget, forms.SelectDateWidget):
                 field.widget.attrs.update({
@@ -26,6 +37,12 @@ class StyledFormMixin:
                 field.widget.attrs.update({
                     'class': 'mb-2',
                     'placeholder': f'Enter {field.label.lower()}'
+                })
+            elif isinstance(field.widget, forms.DateField):
+                field.widget.attrs.update({
+                    'class': 'border-2 border-gray-500 p-2 mb-2 rounded-lg shadow-sm focus:border-rose-400',
+                    'placeholder': 'YYYY-MM-DD',
+                    'class': 'mb-2',
                 })
             else:
                 field.widget.attrs.update({
