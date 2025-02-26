@@ -15,7 +15,7 @@ def events(request):
     event_form = EventModelForm()
 
     context = {"form": event_form}
-    return render(request, 'event_form.html', context)
+    return render(request, 'dashboard/events_table.html', context)
 
 def participants(request):
     participant_form = ParticipantModelForm()
