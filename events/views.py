@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from math import e
+from django.shortcuts import redirect, render
 # from django.http import HttpResponse
 from events.forms import CategoryModelForm, EventModelForm, ParticipantModelForm
 from django.contrib import messages
@@ -22,16 +23,33 @@ def events(request):
             if event_form.is_valid():
                 event_form.save()
                 messages.success(request, 'Event added successfully')
-                return render(request, 'dashboard/events_table.html')
+                return redirect('event-list')
                 
         context = {"form": event_form}
         return render(request, 'event_form.html', context)
-    elif action == 'edit':
-        event_form = EventModelForm()
     
-    events = Event.objects.all()
+    events = Event.objects.select_related('category').prefetch_related('participants').all().order_by('date')
     context = {"events": events}
     return render(request, 'dashboard/events_table.html', context)
+
+def update_event(request, id):
+    event = Event.objects.get(id=id)
+    event_form = EventModelForm(instance=event)
+
+    if request.method == "POST":
+        event_form = EventModelForm(request.POST, instance=event)
+        if event_form.is_valid():
+            event_form.save()
+            messages.success(request, "Event updated successfully")
+            return redirect('event-list')
+
+    return render(request, 'event_form.html', {"form": event_form})
+
+def delete_event(request, id):
+    event = Event.objects.get(id=id)
+    event.delete()
+    messages.success(request, 'Event deleted successfully')
+    return redirect('event-list')
 
 def participants(request):
     participant_form = ParticipantModelForm()
