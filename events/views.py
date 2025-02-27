@@ -2,6 +2,7 @@ from django.shortcuts import render
 # from django.http import HttpResponse
 from events.forms import CategoryModelForm, EventModelForm, ParticipantModelForm
 from django.contrib import messages
+from events.models import *
 
 def home_page(request):
     return render(request, 'home_page.html')
@@ -28,7 +29,8 @@ def events(request):
     elif action == 'edit':
         event_form = EventModelForm()
     
-    context = {}
+    events = Event.objects.all()
+    context = {"events": events}
     return render(request, 'dashboard/events_table.html', context)
 
 def participants(request):
