@@ -2,9 +2,15 @@
 
 {% block title %}Participants - CRUD{% endblock title %}
 {% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="p-3 {% if message.tags == 'success' %}bg-green-400{% endif %} {% if message.tags == 'error' %}bg-red-500{% endif %} text-white">{{message}}</div>
+    {% endfor %}
+{% endif %}
 <form method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Submit" class="bg-blue-500 px-5 py-2 rounded text-white cursor-pointer">
-</form>
+    </form>
 {% endblock content %}

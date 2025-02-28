@@ -8,6 +8,8 @@ urlpatterns = [
     path('events/', events, name='event-list'),
     path('update_event/<int:id>', update_event, name='update-event'),
     path('delete_event/<int:id>', delete_event, name='delete-event'),
-    path('participants/', participants),
+    path('participants/', participants, name='participant-list'),
+    path('participants/<int:id>', participants, name='update-participant'),
+    path('participants/<int:id>', participants, name='delete-participant'),
     path('categories/', categories)
 ]
