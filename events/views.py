@@ -95,6 +95,36 @@ def delete_participant(request, id):
 
 def categories(request):
     category_form = CategoryModelForm()
+    action = request.GET.get('action', 'all')
+    if action == 'add':
+        if request.method == 'POST':
+            category_form = CategoryModelForm(request.POST)
+            if category_form.is_valid():
+                category_form.save()
+                messages.success(request, 'Category added successfully')
+                return redirect("category-list")
+        return render(request, 'category_form.html', {"form": category_form})
+    
+    categories = Category.objects.all().order_by('id')
+    context = {"categories": categories}
+    return render(request, 'dashboard/category_table.html', context)
 
-    context = {"form": category_form}
-    return render(request, 'category_form.html', context)
+def update_category(request, id):
+    category = Category.objects.get(id=id)
+    category_form = CategoryModelForm(instance=category)
+    if request.method == 'POST':
+        category_form = CategoryModelForm(request.POST, instance=category)
+        if category_form.is_valid():
+            category_form.save()
+            messages.success(request, "Category updated successfully")
+            return redirect('category-list')
+        else:
+            messages.error('Something went wrong while updating category')
+
+    return render(request, 'category_form.html', {"form": category_form})
+
+def delete_category(request, id):
+    category = Category.objects.get(id=id)
+    category.delete()
+    messages.success(request, 'Category deleted successfully')
+    return redirect('category-list')
