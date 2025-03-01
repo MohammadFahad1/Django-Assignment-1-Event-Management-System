@@ -17,6 +17,7 @@
         <tr>
             <th class="p-2 text-left">Name</th>
             <th class="p-2 text-left">description</th>
+            <th class="p-2 text-center">Total Events</th>
             <th class="p-2 text-center">Actions</th>
         </tr>
     </thead>
@@ -25,6 +26,7 @@
             <tr class="border-b hover:bg-gray-100">
                 <td class="p-2">{{category.name}}</td>
                 <td class="p-2">{{category.description}}</td>
+                <td class="p-2 text-center">{{category.event_category.count}}</td>
                 <td class="p-2">
                     <div class="flex gap-2 justify-center">
                         <a href="{% url "update-category" category.id %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">

@@ -28,7 +28,7 @@
         {% for event in events %}
             <tr class="border-b hover:bg-gray-100">
                 <td class="p-2">{{event.name}}</td>
-                <td class="p-2">{{event.description}}</td>
+                <td class="p-2">{{event.description|slice:":100"}}...</td>
                 <td class="p-2">{{event.date}}</td>
                 <td class="p-2">{{event.time}}</td>
                 <td class="p-2">{{event.location}}</td>

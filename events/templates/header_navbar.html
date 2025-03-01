@@ -14,7 +14,7 @@
             <div class="py-3 text-sm flex items-center justify-center gap-5 flex-wrap">
             <form action="" method="get" class="w-full md:w-auto mx-auto flex items-center justify-center gap-3">
                 {% csrf_token %}
-                <input type="text" name="search" id="search" class="bg-transparent border border-[#FA00D5] px-10 py-2 rounded-lg w-full" placeholder="Search for events">
+                <input type="text" name="search" id="search" value="{% if search %}{{search_txt}}{% endif %}" class="bg-transparent border border-[#FA00D5] px-10 py-2 rounded-lg w-full" placeholder="Search for events">
                 <input type="submit" value="Search" class="bg-[#FA00D5] p-2 rounded-lg cursor-pointer">
             </form>
             <a href="/" class="hover:text-[#FA00D5]">HOME</a>

@@ -8,6 +8,12 @@ from django.utils.timezone import now
 from django.db.models import Count, Q
 
 def home_page(request):
+    search = request.GET.get('search', '')
+    if search:
+        events = Event.objects.filter(Q(name__icontains=search) | Q(location__icontains=search)).select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
+        return render(request, 'home_page.html', {"events": events, "search": True, "search_txt": search})
+        
+
     events = Event.objects.select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
     return render(request, 'home_page.html', {"events": events})
 
@@ -16,7 +22,7 @@ def event_detail(request, id):
     return render(request, 'event_detail.html', {"event": event})
 
 def dashboard(request):
-    type = request.GET.get('type', 'all')
+    type = request.GET.get('type', 'todays')
     today = now().date()
 
     counts = Event.objects.aggregate(
@@ -31,12 +37,15 @@ def dashboard(request):
         events = Event.objects.filter(date__gte=today).annotate(participants_count=Count('participants')).order_by('date')
     elif type == 'past':
         events = Event.objects.filter(date__lt=today).annotate(participants_count=Count('participants')).order_by('-date')
-    else:
+    elif type == 'all':
         events = Event.objects.annotate(participants_count=Count('participants')).order_by('date')
+    else:
+        events = Event.objects.filter(date=today).annotate(participants_count=Count('participants')).order_by('date')
 
     context = {
         "counts": counts,
-        "events": events
+        "events": events,
+        "type": type
     }
 
     return render(request, 'dashboard/dashboard_home.html', context)
@@ -132,7 +141,7 @@ def categories(request):
                 return redirect("category-list")
         return render(request, 'category_form.html', {"form": category_form})
     
-    categories = Category.objects.all().order_by('id')
+    categories = Category.objects.prefetch_related('event_category').all().order_by('id')
     context = {"categories": categories}
     return render(request, 'dashboard/category_table.html', context)
 

@@ -12,37 +12,42 @@
     <div class="min-h-screen w-full max-w-7xl mx-auto px-5">
         {% include "header_navbar.html" %}
         <main>
-            {% comment %} Hero Section Starts {% endcomment %}
-            <section class="grid grid-cols-1 md:grid-cols-2 mt-14 md:mt-0">
-                <div class="text-slate-100 flex items-center">
-                    <div class="border-s-2 border-yellow-500 pl-10">
-                        <div class="flex items-center gap-4 pb-5">
-                            <p class="text-sm">
-                                MARCH 16 - 16
-                                <div class="h-1 w-1 bg-yellow-500 rounded-full"></div>
-                                DHAKA, BANGLADESH
-                            </p>
+            {% if not search %}
+                {% comment %} Hero Section Starts {% endcomment %}
+                <section class="grid grid-cols-1 md:grid-cols-2 mt-14 md:mt-0">
+                    <div class="text-slate-100 flex items-center">
+                        <div class="border-s-2 border-yellow-500 pl-10">
+                            <div class="flex items-center gap-4 pb-5">
+                                <p class="text-sm">
+                                    MARCH 16 - 16
+                                    <div class="h-1 w-1 bg-yellow-500 rounded-full"></div>
+                                    DHAKA, BANGLADESH
+                                </p>
+                            </div>
+
+                            <h2 class="text-slate-100 text-5xl sm:text-6xl md:text-7xl font-extrabold pb-5">
+                                EXCITING EVENTS
+                            </h2>
+                            
+                            <p class="pb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>aliquid ipsam. Vel esse harum rerum.</p>
+
+                            <a href="#events" class="uppercase text-sm bg-[#FC00D5] hover:bg-[#a1238e] px-5 py-3 font-bold rounded-full">See Events</a>
                         </div>
-
-                        <h2 class="text-slate-100 text-5xl sm:text-6xl md:text-7xl font-extrabold pb-5">
-                            EXCITING EVENTS
-                        </h2>
-                        
-                        <p class="pb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>aliquid ipsam. Vel esse harum rerum.</p>
-
-                        <a href="#events" class="uppercase text-sm bg-[#FC00D5] hover:bg-[#a1238e] px-5 py-3 font-bold rounded-full">See Events</a>
                     </div>
-                </div>
 
-                <div>
-                    <img src="{% static "images/hero-img.webp" %}" class="w-full" alt="">
-                </div>
-            </section>
-            {% comment %} Hero Section Ends {% endcomment %}
+                    <div>
+                        <img src="{% static "images/hero-img.webp" %}" class="w-full" alt="">
+                    </div>
+                </section>
+                {% comment %} Hero Section Ends {% endcomment %}
+            {% endif %}
 
             {% comment %} List of all Events {% endcomment %}
              <section class="my-24" id="events">
                 <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">LIST OF EVENTS</h1>
+                {% if search %}
+                    <h3 class="text-2xl text-slate-100 text-center font-bold mb-16">{{events.count}} records found for "{{search_txt}}"</h3>
+                {% endif %}
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {% for event in events %}
@@ -56,6 +61,7 @@
                         <div class="p-2 border-s-4 border-[#FC00D5] my-3">
                             <h3 class="text-2xl font-bold text-slate-100">{{event.name}}</h3>
                             <h4 class="text-xl font-bold text-[#FC00D5]">Category: {{event.category}}</h4>
+                            <p class="text-slate-300 my-2"><b>Description:</b> {{event.description|slice:":50"}}...</p>
                         </div>
                         <div class="p-2 text-slate-300">
                             <div class="flex gap-3 my-2">

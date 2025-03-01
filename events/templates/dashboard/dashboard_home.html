@@ -21,7 +21,7 @@
     </div>
         
     {% comment %} Count Bar {% endcomment %}
-    <a href="{% url "dashboard" %}">
+    <a href="?type=all">
         <div class="bg-white p-4 rounded-lg shadow-md">
             <div class="flex justify-between gap-3 mb-4">
                 <div class="bg-[#3D69FF] p-3 rounded-lg text-white">
@@ -73,11 +73,12 @@
 
 {% comment %} Events Listings {% endcomment %}
 <div>
-    <h2 class="text-xl font-bold mb-4 pt-5">Today's Events</h2>
+    <h2 class="text-xl font-bold mb-4 pt-5">{{type.capitalize}} Events</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for event in events %}
             <div class="p-4 bg-white shadow-md rounded-lg">
                 <h3 class="text-lg font-semibold">{{event.name}}</h3>
+                <p class="text-gray-500"><b>Description:</b> {{event.description|slice:":40"}}...</p>
                 <p class="text-gray-600"><b>Location:</b> {{event.location}}</p>
                 <p class="text-gray-600"><b>Date:</b> {{event.date}}, At: {{event.time}}</p>
                 <p class="text-gray-600"><b>Total Participants:</b> {{event.participants_count}}</p>
