@@ -4,7 +4,7 @@ from events.views import dashboard, delete_category, delete_event, delete_partic
 urlpatterns = [
     path('', home_page),
     path('details/', event_detail),
-    path('dashboard/', dashboard),
+    path('dashboard/', dashboard, name='dashboard'),
     path('events/', events, name='event-list'),
     path('update_event/<int:id>', update_event, name='update-event'),
     path('delete_event/<int:id>', delete_event, name='delete-event'),

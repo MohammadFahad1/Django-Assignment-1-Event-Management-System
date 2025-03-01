@@ -4,6 +4,8 @@ from django.shortcuts import redirect, render
 from events.forms import CategoryModelForm, EventModelForm, ParticipantModelForm
 from django.contrib import messages
 from events.models import *
+from django.utils.timezone import now
+from django.db.models import Count, Q
 
 def home_page(request):
     return render(request, 'home_page.html')
@@ -12,7 +14,30 @@ def event_detail(request):
     return render(request, 'event_detail.html')
 
 def dashboard(request):
-    return render(request, 'dashboard/dashboard_home.html')
+    type = request.GET.get('type', 'all')
+    today = now().date()
+
+    counts = Event.objects.aggregate(
+        total_participant=Count('participants', distinct=True),
+        total_events=Count('id', distinct=True),
+        upcomming_events=Count('id', filter=Q(date__gte= today), distinct=True),
+        past_events=Count('id', filter=Q(date__lt= today), distinct=True)
+    )
+
+    # Retrieve event data
+    if type == 'upcomming':
+        events = Event.objects.filter(date__gte=today).annotate(participants_count=Count('participants')).order_by('date')
+    elif type == 'past':
+        events = Event.objects.filter(date__lt=today).annotate(participants_count=Count('participants')).order_by('-date')
+    else:
+        events = Event.objects.annotate(participants_count=Count('participants')).order_by('date')
+
+    context = {
+        "counts": counts,
+        "events": events
+    }
+
+    return render(request, 'dashboard/dashboard_home.html', context)
 
 def events(request):
     event_form = EventModelForm()
