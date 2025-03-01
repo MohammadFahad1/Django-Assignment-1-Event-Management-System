@@ -14,10 +14,10 @@
         <main>
             <section class="my-10 p-10 bg-gray-950">
                 <img src="{% static "images/event1.jpg" %}" class="mx-auto block" alt="">
-                <h2 class="text-slate-100 text-3xl font-bold my-5">Istanbul Wine Party 2018</h2>
+                <h2 class="text-slate-100 text-3xl font-bold my-5">{{event.name}}</h2>
 
                 {% comment %} Event Date & Category Section {% endcomment %}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                     <div class="flex items-center justify-start gap-2 p-4 bg-slate-900 min-w-64 rounded">
                         <div class="bg-[#FC00D5] p-2 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -27,7 +27,20 @@
 
                         <div>
                             <p class="text-slate-300 font-bold">Date</p>
-                            <h4 class="font-bold text-white uppercase">26 december 2018</h4>
+                            <h4 class="font-bold text-white uppercase">{{event.date|date:"d F Y, l"}}</h4>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-start gap-2 p-4 bg-slate-900 min-w-64 rounded">
+                        <div class="bg-[#FC00D5] p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </div>
+
+                        <div>
+                            <p class="text-slate-300 font-bold">Time</p>
+                            <h4 class="font-bold text-white uppercase">{{event.time|date:"h:i A"}}</h4>
                         </div>
                     </div>
 
@@ -41,38 +54,25 @@
 
                         <div>
                             <p class="text-slate-300 font-bold">Category</p>
-                            <h4 class="font-bold text-white uppercase">vanila hotal</h4>
+                            <h4 class="font-bold text-white uppercase">{{event.category}}</h4>
                         </div>
                     </div>
                 </div>
 
                 {% comment %} Event Details {% endcomment %}
-                <p class="text-slate-100 text-justify my-10">{% lorem 9 b random %}</p>
+                <p class="text-slate-100 text-justify my-10">{{event.description}}</p>
 
                 {% comment %} List of Participants {% endcomment %}
                 <div class="max-w-5xl mx-auto">
                 <h2 class="text-2xl font-bold text-center mb-6 text-[#FC00D5]">Event Participants</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        <div class="p-4 border rounded-lg shadow-md text-center">
-                            <img src="{% static "images/male-user.png" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
-                            <h3 class="font-semibold text-slate-200">John Doe</h3>
-                            <p class="text-sm text-gray-500">johndoe@example.com</p>
-                        </div>
-                        <div class="p-4 border rounded-lg shadow-md text-center">
-                            <img src="{% static "images/female-user.webp" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
-                            <h3 class="font-semibold text-slate-200">Jane Smith</h3>
-                            <p class="text-sm text-gray-500">janesmith@example.com</p>
-                        </div>
-                        <div class="p-4 border rounded-lg shadow-md text-center">
-                            <img src="{% static "images/female-user.webp" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
-                            <h3 class="font-semibold text-slate-200">Alice Johnson</h3>
-                            <p class="text-sm text-gray-500">alice@example.com</p>
-                        </div>
-                        <div class="p-4 border rounded-lg shadow-md text-center">
-                            <img src="{% static "images/male-user.png" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
-                            <h3 class="font-semibold text-slate-200">Robert Brown</h3>
-                            <p class="text-sm text-gray-500">robert@example.com</p>
-                        </div>
+                        {% for participant in event.participants.all %}
+                            <div class="p-4 border rounded-lg shadow-md text-center">
+                                <img src="{% static "images/male-user.png" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
+                                <h3 class="font-semibold text-slate-200">{{participant.name}}</h3>
+                                <p class="text-sm text-gray-500">{{participant.email}}</p>
+                            </div>
+                        {% endfor %}
                         <!-- Add more participants as needed -->
                     </div>
                 </div>

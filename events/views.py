@@ -8,10 +8,12 @@ from django.utils.timezone import now
 from django.db.models import Count, Q
 
 def home_page(request):
-    return render(request, 'home_page.html')
+    events = Event.objects.select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
+    return render(request, 'home_page.html', {"events": events})
 
-def event_detail(request):
-    return render(request, 'event_detail.html')
+def event_detail(request, id):
+    event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
+    return render(request, 'event_detail.html', {"event": event})
 
 def dashboard(request):
     type = request.GET.get('type', 'all')

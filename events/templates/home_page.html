@@ -45,16 +45,17 @@
                 <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">LIST OF EVENTS</h1>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {% for event in events %}
                     {% comment %} Card Items Starts {% endcomment %}
                     <div class="border-2 border-[#FC00D5] relative top-0 left-0">
                         <img src="{% static "images/event1.jpg" %}" alt="" class="w-full">
                         <div class="absolute top-4 left-4 bg-[#FC00D5] p-4 text-center">
-                            <h4 class="text-xl font-extrabold">26</h4>
-                            <p>JULY</p>
+                            <h4 class="text-xl font-extrabold">{{event.date|date:"d"}}</h4>
+                            <p>{{event.date|date:"F"}}</p>
                         </div>
                         <div class="p-2 border-s-4 border-[#FC00D5] my-3">
-                            <h3 class="text-2xl font-bold text-slate-100">Barcelona Food Truck Festival 2018-2019</h3>
-                            <h4 class="text-xl font-bold text-[#FC00D5]">Category: Technological</h4>
+                            <h3 class="text-2xl font-bold text-slate-100">{{event.name}}</h3>
+                            <h4 class="text-xl font-bold text-[#FC00D5]">Category: {{event.category}}</h4>
                         </div>
                         <div class="p-2 text-slate-300">
                             <div class="flex gap-3 my-2">
@@ -63,7 +64,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
                                 </div>
-                                <span>Start 20:00pm - 22:00pm</span>
+                                <span>Time: {{event.time|date:"f A"}}</span>
                             </div>
 
                             <div class="flex gap-3 my-2">
@@ -73,13 +74,23 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
                                 </div>
-                                <span>Manhattan, New York</span>
+                                <span>{{event.location}}</span>
                             </div>
 
-                            <a href="/details" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors">View Details</a>
+                            <div class="flex gap-3 my-2">
+                                <div class="p-1 rounded-full bg-[#FC00D5] text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                                    </svg>
+                                </div>
+                                <span>{{ event.participants_count }} Participants</span>
+                            </div>
+
+                            <a href="{% url "event-detail" event.id %}" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors">View Details</a>
                         </div>
                     </div>
                     {% comment %} Card Item Ends {% endcomment %}
+                {% endfor %}
                 </div>
              </section>
             {% comment %} List of all Events {% endcomment %}
