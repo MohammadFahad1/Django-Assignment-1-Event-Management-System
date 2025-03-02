@@ -1,3 +1,5 @@
+import dj_database_url
+
 """
 Django settings for event_management project.
 
@@ -91,15 +93,24 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 } """
 
 # For Postgres
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'event_management',
+#         'USER': 'postgres',
+#         'PASSWORD': '787898',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
+
+# SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'event_management',
-        'USER': 'postgres',
-        'PASSWORD': '787898',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://event_management_iy3v_user:RXdITp5t5MH91GQ10epqVCPJh92Fe6dG@dpg-cv28t0ggph6c73bdvq5g-a.oregon-postgres.render.com/event_management_iy3v',
+        conn_max_age=600
+    )
 }
 
 
