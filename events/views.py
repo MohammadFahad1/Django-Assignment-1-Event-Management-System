@@ -9,13 +9,14 @@ from django.db.models import Count, Q
 
 def home_page(request):
     search = request.GET.get('search', '')
+    today = now().date()
     if search:
         events = Event.objects.filter(Q(name__icontains=search) | Q(location__icontains=search)).select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
-        return render(request, 'home_page.html', {"events": events, "search": True, "search_txt": search})
+        return render(request, 'home_page.html', {"events": events, "search": True, "search_txt": search, "today": today})
         
 
     events = Event.objects.select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
-    return render(request, 'home_page.html', {"events": events})
+    return render(request, 'home_page.html', {"events": events, "today": today})
 
 def event_detail(request, id):
     event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
