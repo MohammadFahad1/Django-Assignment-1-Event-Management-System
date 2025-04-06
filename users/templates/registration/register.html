@@ -1,0 +1,20 @@
+{% comment %} {% load static %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
+    <title>EVMS - Register</title>
+</head>
+<body>
+    <h1>Create an account</h1>
+    <div>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit" class="text-white px-3 py-2 bg-[#FC00D5] rounded-sm">Sign Up</button>
+        </form>
+    </div>
+</body>
+</html>

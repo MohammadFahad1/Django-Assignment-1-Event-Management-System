@@ -6,4 +6,5 @@ from events.views import home_page, event_detail, dashboard
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('events.urls')),
+    path('users/', include('users.urls')),
 ] + debug_toolbar_urls()
