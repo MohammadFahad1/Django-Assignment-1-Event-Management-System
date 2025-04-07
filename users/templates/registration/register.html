@@ -5,11 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
-    <title>EVMS - Register</title>
+    <title>EVMS - User Sign-Up Page</title>
 </head>
 <body>
     <h1>Create an account</h1>
     <div>
+        {% comment %} Messages {% endcomment %}
+        <div>
+            {% for message in messages %}
+                <p class="bg-green-500 p-3 text-white">{{message}}</p>
+            {% endfor %}
+        </div>
+
         <form action="" method="POST">
             {% csrf_token %}
             {{form}}
