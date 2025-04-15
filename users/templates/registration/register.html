@@ -19,7 +19,19 @@
 
         <form action="" method="POST">
             {% csrf_token %}
-            {{form}}
+            {% for field in form %}
+                <p>
+                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    {{field}}
+                </p>
+                {% if field.errors %}
+                    <ul>
+                    {% for error in field.errors %}
+                        <li class="text-red-500">{{error}}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
             <button type="submit" class="text-white px-3 py-2 bg-[#FC00D5] rounded-sm">Sign Up</button>
         </form>
     </div>

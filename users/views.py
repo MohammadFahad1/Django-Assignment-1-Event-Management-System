@@ -3,14 +3,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from users.forms import RegisterForm
+from users.forms import CustomRegistrationForm, RegisterForm
 
 # Create your views here.
 def sign_up(request):
-    form = RegisterForm() # Default form provided by Django
+    form = CustomRegistrationForm() # Default form provided by Django
     
     if request.method == 'POST':
-        form = RegisterForm(request.POST) # Default form provided by Django
+        form = CustomRegistrationForm(request.POST) # Default form provided by Django
         if form.is_valid():
             form.save()
             messages.success(request, 'User created successfully')
