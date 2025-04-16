@@ -15,6 +15,10 @@
             {% for message in messages %}
                 <p class="bg-green-500 p-3 text-white">{{message}}</p>
             {% endfor %}
+        <div>
+            {% for error in form.non_field_errors %}
+                <p style="background: red; padding: 8px; color: #fff;">{{error}}</p>
+            {% endfor %}
         </div>
 
         <form action="" method="POST">
@@ -27,7 +31,7 @@
                 {% if field.errors %}
                     <ul>
                     {% for error in field.errors %}
-                        <li class="text-red-500">{{error}}</li>
+                        <li style="color: red;">{{error}}</li>
                     {% endfor %}
                     </ul>
                 {% endif %}

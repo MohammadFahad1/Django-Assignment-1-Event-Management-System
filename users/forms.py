@@ -2,6 +2,7 @@ from django import forms
 import re
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.validators import validate_email
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -24,12 +25,23 @@ class CustomRegistrationForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username', 'email', 'password', 'confirm_password']
     
     def clean(self):
-        pass
+        cleaned_data = super().clean()
+        password = self.cleaned_data.get('password')
+        confirm_password = self.cleaned_data.get('confirm_password')
+
+        errors = []
+
+        if password and confirm_password and password != confirm_password:
+            errors.append("Passwords do not match")
+        
+        if errors:
+            raise forms.ValidationError(errors)
+
+        return cleaned_data
 
     
     def clean_password(self):
         password = self.cleaned_data.get('password')
-        confirm_password = self.cleaned_data.get('confirm_password')
 
         errors = []
 
@@ -44,14 +56,26 @@ class CustomRegistrationForm(forms.ModelForm):
         
         if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
             errors.append("Password must contain at least one special character")
-
-        if password and confirm_password and password != confirm_password:
-            errors.append("Passwords do not match")
         
         if errors:
             raise forms.ValidationError(errors)
         
         return password
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if validate_email(email):
+            raise forms.ValidationError("Invalid email address")
+        
+        # Restrict from specific domains
+        if email.endswith('ahmedbawanyacademy.edu.bd'):
+            raise forms.ValidationError("Invalid email address")
+
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already exists")
+        
+        return email
 
     # def clean(self):
     #     cleaned_data = super().clean()
