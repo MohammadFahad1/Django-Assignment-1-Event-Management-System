@@ -3,6 +3,7 @@ import re
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
+from events.forms import StyledFormMixin
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -15,8 +16,7 @@ class RegisterForm(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
 
-
-class CustomRegistrationForm(forms.ModelForm):
+class CustomRegistrationForm(forms.ModelForm, StyledFormMixin):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
@@ -38,7 +38,6 @@ class CustomRegistrationForm(forms.ModelForm):
             raise forms.ValidationError(errors)
 
         return cleaned_data
-
     
     def clean_password(self):
         password = self.cleaned_data.get('password')
@@ -67,15 +66,22 @@ class CustomRegistrationForm(forms.ModelForm):
 
         if validate_email(email):
             raise forms.ValidationError("Invalid email address")
-        
-        # Restrict from specific domains
-        if email.endswith('ahmedbawanyacademy.edu.bd'):
-            raise forms.ValidationError("Invalid email address")
 
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Email already exists")
         
         return email
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
+    
+    def __init__(self, *arg, **kwarg):
+        super().__init__(*arg, **kwarg)
+        self.apply_styled_widgets()
 
     # def clean(self):
     #     cleaned_data = super().clean()

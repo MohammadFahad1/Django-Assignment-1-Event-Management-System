@@ -1,43 +1,45 @@
-{% comment %} {% load static %} {% endcomment %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <title>EVMS - User Sign-Up Page</title>
 </head>
 <body>
-    <h1>Create an account</h1>
-    <div>
-        {% comment %} Messages {% endcomment %}
+    <div class="max-w-[800px] mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-4">Create an account</h1>
         <div>
-            {% for message in messages %}
-                <p class="bg-green-500 p-3 text-white">{{message}}</p>
-            {% endfor %}
-        <div>
-            {% for error in form.non_field_errors %}
-                <p style="background: red; padding: 8px; color: #fff;">{{error}}</p>
-            {% endfor %}
-        </div>
+            {% comment %} Messages {% endcomment %}
+            <div>
+                {% for message in messages %}
+                    <p style="background: green; padding: 8px; color: #fff;">{{message}}</p>
+                {% endfor %}
+            <div>
+                {% for error in form.non_field_errors %}
+                    <p style="background: red; padding: 8px; color: #fff;">{{error}}</p>
+                {% endfor %}
+            </div>
 
-        <form action="" method="POST">
-            {% csrf_token %}
-            {% for field in form %}
-                <p>
-                <label for="{{field.id_for_label}}">{{field.label}}</label>
-                    {{field}}
-                </p>
-                {% if field.errors %}
-                    <ul>
-                    {% for error in field.errors %}
-                        <li style="color: red;">{{error}}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endfor %}
-            <button type="submit" class="text-white px-3 py-2 bg-[#FC00D5] rounded-sm">Sign Up</button>
-        </form>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <p>
+                    <label for="{{field.id_for_label}}">{{field.label}}</label>
+                        {{field}}
+                    </p>
+                    {% if field.errors %}
+                        <ul>
+                        {% for error in field.errors %}
+                            <li style="color: red;">{{error}}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="text-white px-3 py-2 bg-[#FC00D5] rounded mt-5">Sign Up</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
