@@ -42,8 +42,15 @@ def sign_in(request):
 
         if user is not None:
             login(request, user)
+            messages.success(request, "Logged in successfully")
             return redirect('home')
         else:
             messages.error(request, 'Invalid username or password')
 
     return render(request, 'registration/login.html')
+
+def sign_out(request):
+    if request.method == 'POST':
+        messages.success(request, 'Logged out successfully')
+        logout(request)
+        return redirect('sign-in')

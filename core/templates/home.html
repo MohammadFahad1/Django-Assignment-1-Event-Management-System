@@ -7,8 +7,17 @@
 </head>
 <body>
     <h1>Welcome to home page</h1>
+    {% for message in messages %}
+        <p style="color: green; padding: 8px; background: lightgreen;">{{message}}</p>
+    {% endfor %}
+    
     {% if user.is_authenticated %}
         {{user}}
+        <br><br>
+        <form action="{% url 'sign-out' %}" method="post"> 
+            {% csrf_token %}
+            <button type="submit">Sign Out</button>
+        </form>
     {% else %}
         Annonymous
     {% endif %}
