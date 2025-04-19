@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
 
 from users.forms import CustomRegistrationForm, RegisterForm
 
@@ -27,3 +28,22 @@ def sign_up(request):
         #     messages.message(request, 'Error creating user')
         
     return render(request, 'registration/register.html', {"form": form})
+
+def sign_in(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not username or not password:
+            messages.error(request, 'Please enter both username and password')
+            return redirect('sign-in')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid username or password')
+
+    return render(request, 'registration/login.html')

@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <title>EVMS - Sign-In Form</title>
+</head>
+<body>
+    <div class="max-w-[500px] mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-4">Sign In Form</h1>
+        <ul>
+            {% for message in messages %}
+                <li class="{% if message.tags == 'error' %}text-red-500{% endif %} {% if message.tags == 'success' %}text-green-500{% endif %} font-bold text-xl">{{message}}</li>
+            {% endfor %}
+        </ul>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" id="username" placeholder="Enter your username" required class="p-2 rounded border border-1 border-gray-500 w-full my-2"><br>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required class="p-2 rounded border border-1 border-gray-500 w-full my-2"><br>
+            <button type="submit" class="py-2 px-4 bg-blue-600 text-white rounded mt-2">Sign In</button>
+        </form>
+    </div>
+</body>
+</html>
