@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
-from users.forms import CustomRegistrationForm, RegisterForm
+from users.forms import CustomRegistrationForm
 
 # Create your views here.
 def sign_up(request):
@@ -15,17 +15,6 @@ def sign_up(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'User created successfully')
-        #     username = form.cleaned_data('username')
-        #     password = form.cleaned_data('password1')
-        #     confirm_password = form.cleaned_data('password2')
-
-        #     if password and confirm_password and password == confirm_password:
-        #         User.objects.create(username=username, password=password)
-        #         messages(request, 'User created successfully')
-        #     else:
-        #         messages.error(request, 'Password does not match')
-        # else:
-        #     messages.message(request, 'Error creating user')
         
     return render(request, 'registration/register.html', {"form": form})
 

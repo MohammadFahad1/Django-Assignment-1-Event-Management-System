@@ -1,6 +1,5 @@
 from math import e
 from django.shortcuts import redirect, render
-# from django.http import HttpResponse
 from events.forms import CategoryModelForm, EventModelForm, ParticipantModelForm
 from django.contrib import messages
 from events.models import *
