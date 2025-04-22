@@ -82,10 +82,10 @@ def rsvp_event(sender, instance, created, **kwargs):
     if created:
         assigned_emails = [participant.email for participant in instance.participants.all()]
 
-        send_mail(
-            "Subject here",
-            "Here is the message.",
-            "from@example.com",
-            ["to@example.com"],
-            fail_silently=False,
-        )
+        # send_mail(
+        #     "Subject here",
+        #     "Here is the message.",
+        #     "from@example.com",
+        #     ["to@example.com"],
+        #     fail_silently=False,
+        # )
