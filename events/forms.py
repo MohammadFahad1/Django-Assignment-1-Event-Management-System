@@ -2,6 +2,10 @@ from django import forms
 from events.models import *
 
 class StyledFormMixin:
+    def __init__(self, *arg, **kwarg):
+        super().__init__(*arg, **kwarg)
+        self.apply_styled_widgets()
+
     default_classes = "border-2 border-gray-500 p-2 my-2 w-full rounded-lg shadow-sm focus:border-rose-400"
 
     def apply_styled_widgets(self):
@@ -55,20 +59,12 @@ class CategoryModelForm(StyledFormMixin, forms.ModelForm):
         model = Category
         fields = ['name', 'description']
 
-    def __init__(self, *arg, **kwarg):
-        super().__init__(*arg, **kwarg)
-        self.apply_styled_widgets()
 
 
 class EventModelForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = Event
         exclude = []
-    
-    def __init__(self, *arg, **kwarg):
-        super().__init__(*arg, **kwarg)
-        self.apply_styled_widgets()
-
 
 class ParticipantModelForm(StyledFormMixin, forms.ModelForm):
     class Meta:
@@ -77,7 +73,3 @@ class ParticipantModelForm(StyledFormMixin, forms.ModelForm):
         widgets = {
             'event': forms.CheckboxSelectMultiple(attrs={'class': 'border-2 border-gray-500'})
         }
-
-    def __init__(self, *arg, **kwarg):
-        super().__init__(*arg, **kwarg)
-        self.apply_styled_widgets()

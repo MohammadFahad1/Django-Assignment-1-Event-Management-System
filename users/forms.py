@@ -5,18 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
 
-class RegisterForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name','username', 'email', 'password1', 'password2']
-
-    def __init__(self, *args, **kwargs):
-        super(UserCreationForm, self).__init__(*args, **kwargs)
-
-        for fieldname in ['username', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
-
-class CustomRegistrationForm(forms.ModelForm, StyledFormMixin):
+class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
@@ -99,24 +88,3 @@ class CustomRegistrationForm(forms.ModelForm, StyledFormMixin):
         if commit:
             user.save()
         return user
-    
-    def __init__(self, *arg, **kwarg):
-        super().__init__(*arg, **kwarg)
-        self.apply_styled_widgets()
-
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     password = cleaned_data.get('password')
-    #     confirm_password = cleaned_data.get('confirm_password')
-
-    #     if password and confirm_password and password != confirm_password:
-    #         raise forms.ValidationError("Passwords do not match")
-
-    #     return cleaned_data
-    
-    # def save(self, commit=True):
-    #     user = super().save(commit=False)
-    #     user.set_password(self.cleaned_data['password'])
-    #     if commit:
-    #         user.save()
-    #     return user
