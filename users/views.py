@@ -43,3 +43,6 @@ def sign_out(request):
         messages.success(request, 'Logged out successfully')
         logout(request)
         return redirect('sign-in')
+    
+def admin_dashboard(request):
+    return render(request, 'admin/dashboard.html')
