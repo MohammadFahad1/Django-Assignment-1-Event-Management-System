@@ -45,4 +45,5 @@ def sign_out(request):
         return redirect('sign-in')
     
 def admin_dashboard(request):
-    return render(request, 'admin/dashboard.html')
+    users = User.objects.all()
+    return render(request, 'admin/dashboard.html', {"users": users})
