@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
-from users.forms import CustomRegistrationForm
+from users.forms import CustomRegistrationForm, AssignRoleForm
 
 # Create your views here.
 def sign_up(request):
@@ -47,3 +47,28 @@ def sign_out(request):
 def admin_dashboard(request):
     users = User.objects.all()
     return render(request, 'admin/dashboard.html', {"users": users})
+
+def assign_role(request, user_id):
+    user = User.objects.get(id=user_id)
+    form = AssignRoleForm()
+    if request.method == 'POST':
+        form = AssignRoleForm(request.POST)
+        if form.is_valid():
+            role = form.cleaned_data['role']
+            user.groups.clear()
+            user.groups.add(role)
+            messages.success(request, 'User {user.username} has been assigned to the {role.name} role')
+            return redirect('admin-dashboard')
+
+    return render(request, 'admin/assign_role.html', {"form": form})
+
+def role_assign(request, user_id):
+    user = User.objects.get(id=user_id)
+    form = AssignRoleForm()
+
+    if request.method == 'POST':
+        form = AssignRoleForm(request.POST)
+        if form.is_valid():
+            role = form.cleaned_data['role']
+            user.groups.clear()
+            user.groups.add(role)
