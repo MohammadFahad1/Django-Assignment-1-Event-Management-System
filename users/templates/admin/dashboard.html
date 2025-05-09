@@ -8,6 +8,10 @@
     <title>{% block title %}Dashboard{% endblock title %}</title>
 </head>
 <body>
+    {% for message in messages %}
+        <p style="background: green; padding: 8px; color: #fff;">{{message}}</p>
+    {% endfor %}
+    
     {% block content %}
         {% include "admin/user_list.html" %}
     {% endblock content %}
