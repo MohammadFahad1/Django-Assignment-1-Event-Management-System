@@ -54,7 +54,7 @@ class StyledFormMixin:
             else:
                 field.widget.attrs.update({
                     'class': self.default_classes,
-                    'placeholder': f'Enter {field.label.lower()}'
+                    'placeholder': f'Enter {field.label}'
                 })
 
 class CategoryModelForm(StyledFormMixin, forms.ModelForm):
