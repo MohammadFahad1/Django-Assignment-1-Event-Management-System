@@ -24,7 +24,7 @@
     <tbody>
         {% for participant in participants %}
             <tr class="border-b hover:bg-gray-100">
-                <td class="p-2">{{participant.name}}</td>
+                <td class="p-2">{{participant.first_name}} {{participant.last_name}}</td>
                 <td class="p-2">{{participant.email}}</td>
                 <td class="p-2 text-center">{{participant.event.count}}</td>
                 <td class="p-2">

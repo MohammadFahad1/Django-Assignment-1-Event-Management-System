@@ -2,6 +2,7 @@ from django import forms
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.mail import send_mail
+from django.contrib.auth.models import User
 from events.models import *
 
 class StyledFormMixin:
@@ -71,7 +72,7 @@ class EventModelForm(StyledFormMixin, forms.ModelForm):
 
 class ParticipantModelForm(StyledFormMixin, forms.ModelForm):
     class Meta:
-        model = Participant
+        model = User
         exclude = []
         widgets = {
             'event': forms.CheckboxSelectMultiple(attrs={'class': 'border-2 border-gray-500'})
@@ -81,11 +82,3 @@ class ParticipantModelForm(StyledFormMixin, forms.ModelForm):
 def rsvp_event(sender, instance, created, **kwargs):
     if created:
         assigned_emails = [participant.email for participant in instance.participants.all()]
-
-        # send_mail(
-        #     "Subject here",
-        #     "Here is the message.",
-        #     "from@example.com",
-        #     ["to@example.com"],
-        #     fail_silently=False,
-        # )

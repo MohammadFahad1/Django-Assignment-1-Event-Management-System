@@ -105,11 +105,11 @@ def participants(request):
             
         return render(request, 'participant_form.html', {"form": participant_form})
 
-    participants = Participant.objects.prefetch_related('event').all().order_by('id')
+    participants = User.objects.all().order_by('id')
     return render(request, 'dashboard/participants_table.html', {"participants": participants})
 
 def update_participant(request, id):
-    participant = Participant.objects.get(id=id)
+    participant = User.objects.get(id=id)
     participant_form = ParticipantModelForm(instance=participant)
 
     if request.method == 'POST':
@@ -124,7 +124,7 @@ def update_participant(request, id):
     return render(request, 'participant_form.html', {"form": participant_form})
 
 def delete_participant(request, id):
-    participant = Participant.objects.get(id=id)
+    participant = User.objects.get(id=id)
     participant.delete()
     messages.success(request, 'Participant deleted successfully')
     return redirect('participant-list')
