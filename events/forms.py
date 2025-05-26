@@ -77,8 +77,3 @@ class ParticipantModelForm(StyledFormMixin, forms.ModelForm):
         widgets = {
             'event': forms.CheckboxSelectMultiple(attrs={'class': 'border-2 border-gray-500'})
         }
-    
-@receiver(post_save, sender=Event)
-def rsvp_event(sender, instance, created, **kwargs):
-    if created:
-        assigned_emails = [participant.email for participant in instance.participants.all()]

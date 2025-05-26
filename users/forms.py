@@ -86,6 +86,7 @@ class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
         if commit:
+            user.is_active = False
             user.save()
         return user
 

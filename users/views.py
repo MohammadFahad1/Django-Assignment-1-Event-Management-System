@@ -13,7 +13,11 @@ def sign_up(request):
         form = CustomRegistrationForm(request.POST) # Default form provided by Django
         if form.is_valid():
             form.save()
-            messages.success(request, 'User created successfully')
+            # user = form.save(commit=False)
+            # user.is_active = False
+            # user.save()
+            messages.success(request, 'A confirmation email has been sent to your email address. Please confirm your email address to activate your account.')
+            return redirect('sign-in')
         
     return render(request, 'registration/register.html', {"form": form})
 
