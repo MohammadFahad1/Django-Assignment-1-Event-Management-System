@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.tokens import default_token_generator
 from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm
 
 # Create your views here.
@@ -45,6 +46,24 @@ def sign_out(request):
     if request.method == 'POST':
         messages.success(request, 'Logged out successfully')
         logout(request)
+        return redirect('sign-in')
+
+def activate_user(request, user_id, token):
+    try:
+        user = User.objects.get(id=user_id)
+
+        if user.is_active == False:
+            if default_token_generator.check_token(user, token):
+                user.is_active = True
+                user.save()
+                messages.success(request, 'Your account has been activated. You can now log in.')
+                return redirect('sign-in')
+        else:
+            messages.error(request, 'Your account is already activated. You can now log in.')
+            return redirect('sign-in')
+
+    except User.DoesNotExist:
+        messages.error(request, 'Invalid activation link')
         return redirect('sign-in')
     
 def admin_dashboard(request):
