@@ -1,6 +1,6 @@
 from django.dispatch import receiver
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User
+from django.db.models.signals import post_save, pre_save
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.core.mail import send_mail
@@ -8,6 +8,11 @@ from django.core.mail import send_mail
 @receiver(post_save, sender=User)
 def send_activation_email(sender, instance, created, **kwargs):
     if created:
+        # Assign a default role to the user
+        instance.groups.clear()
+        instance.groups.add(Group.objects.get(name='Participant'))
+
+        # Generate activation token
         token = default_token_generator.make_token(instance)
         activation_url = f"{settings.FRONTEND_URL}/users/activate/{instance.id}/{token}/"
 
