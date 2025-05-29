@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from psycopg2 import Timestamp
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -19,3 +20,8 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.date} - {self.time}"
+
+class RSVP(models.Model):
+    event = models.ManyToManyField(Event, related_name="rsvps", blank=True)
+    user = models.ManyToManyField(User, related_name="rsvps", blank=True)
+    Timestamp = models.DateTimeField(auto_now_add=True)

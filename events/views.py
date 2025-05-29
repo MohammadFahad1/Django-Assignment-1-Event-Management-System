@@ -164,3 +164,15 @@ def delete_category(request, id):
     category.delete()
     messages.success(request, 'Category deleted successfully')
     return redirect('category-list')
+
+def rsvp(request, event_id):
+    event = Event.objects.get(id=event_id)
+    user = request.user
+
+    # check if user has already RSVPed
+    if event.rsvps.filter(id=user.id).exists():
+        messages.error(request, 'You have already RSVPed to this event')
+    else:
+        event.rsvps.add(user) 
+        messages.success(request, 'You have RSVPed to this event')
+    return redirect('home')

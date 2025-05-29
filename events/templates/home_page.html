@@ -92,7 +92,10 @@
                                 <span>{{ event.participants_count }} Participants</span>
                             </div>
 
-                            <a href="{% url "event-detail" event.id %}" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors">View Details</a>
+                            <div class="flex justify-between items-center gap-3 my-2">
+                                <a href="{% url "event-detail" event.id %}" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#FC00D5] w-full">Details</a>
+                                <a href="{% url "rsvp" event.id %}" class="block px-5 py-3 hover:bg-[#fcc500] hover:text-black text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#fcc500]">RSVP</a>
+                            </div>
                         </div>
                     </div>
                     {% comment %} Card Item Ends {% endcomment %}
