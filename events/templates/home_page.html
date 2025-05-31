@@ -48,7 +48,20 @@
                 {% if search %}
                     <h3 class="text-2xl text-slate-100 text-center font-bold mb-16">{{events.count}} records found for "{{search_txt}}"</h3>
                 {% endif %}
-
+                
+                <div class="text-center pb-8">
+                    {% for message in messages %}
+                        <p class="
+                            {% if message.tags == 'error' %}
+                                text-red-500
+                            {% elif message.tags == 'success' %}
+                                text-green-500
+                            {% elif message.tags == 'warning' %}
+                                text-yellow-500
+                            {% endif %}
+                       ">{{message}}</p>
+                    {% endfor %}
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {% for event in events %}
                     {% comment %} Card Items Starts {% endcomment %}
@@ -91,7 +104,6 @@
                                 </div>
                                 <span>{{ event.participants_count }} Participants</span>
                             </div>
-
                             <div class="flex justify-between items-center gap-3 my-2">
                                 <a href="{% url "event-detail" event.id %}" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#FC00D5] w-full">Details</a>
                                 <a href="{% url "rsvp" event.id %}" class="block px-5 py-3 hover:bg-[#fcc500] hover:text-black text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#fcc500]">RSVP</a>

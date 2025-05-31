@@ -2,7 +2,7 @@ from django.urls import path
 from events.views import dashboard, delete_category, delete_event, delete_participant, events, home_page, event_detail, participants, categories, rsvp, update_category, update_event, update_participant
 
 urlpatterns = [
-    path('', home_page, name='home'),
+    path('', home_page, name='home_page'),
     path('details/<int:id>', event_detail, name='event-detail'),
     path('dashboard/', dashboard, name='dashboard'),
     path('events/', events, name='event-list'),

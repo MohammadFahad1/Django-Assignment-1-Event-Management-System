@@ -174,7 +174,10 @@ def rsvp(request, event_id):
         messages.error(request, 'You have already RSVPed to this event')
     else:
         rsvp_instance = RSVP.objects.create()
-        event.rsvps.set([rsvp_instance])
-        user.rsvps.set([rsvp_instance])
+        event.rsvps.add(rsvp_instance)
+        user.rsvps.add(rsvp_instance)
+        rsvp_instance.save()
+        # rsvp_instance.user.set([user])
+        # rsvp_instance.event.set([event])
         messages.success(request, 'You have RSVPed to this event')
-    return redirect('home')
+    return redirect('home_page')
