@@ -22,6 +22,8 @@ class Event(models.Model):
         return f"{self.name} - {self.date} - {self.time}"
 
 class RSVP(models.Model):
+    lastUserRSVPed = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    lastEventRSVPed = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
     event = models.ManyToManyField(Event, related_name="rsvps", blank=True)
     user = models.ManyToManyField(User, related_name="rsvps", blank=True)
     Timestamp = models.DateTimeField(auto_now_add=True)

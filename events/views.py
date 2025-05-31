@@ -173,7 +173,7 @@ def rsvp(request, event_id):
     if RSVP.objects.filter(event=event, user=user).exists():
         messages.error(request, 'You have already RSVPed to this event')
     else:
-        rsvp_instance = RSVP.objects.create()
+        rsvp_instance = RSVP.objects.create(lastUserRSVPed=user, lastEventRSVPed=event)
         event.rsvps.add(rsvp_instance)
         user.rsvps.add(rsvp_instance)
         rsvp_instance.save()
