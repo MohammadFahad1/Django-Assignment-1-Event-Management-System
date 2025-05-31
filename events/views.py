@@ -170,9 +170,11 @@ def rsvp(request, event_id):
     user = request.user
 
     # check if user has already RSVPed
-    if event.rsvps.filter(id=user.id).exists():
+    if RSVP.objects.filter(event=event, user=user).exists():
         messages.error(request, 'You have already RSVPed to this event')
     else:
-        event.rsvps.add(user) 
+        rsvp_instance = RSVP.objects.create()
+        event.rsvps.set([rsvp_instance])
+        user.rsvps.set([rsvp_instance])
         messages.success(request, 'You have RSVPed to this event')
     return redirect('home')
