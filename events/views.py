@@ -183,8 +183,7 @@ def rsvp(request, event_id):
     return redirect('home_page')
 
 def rsvp_list(request):
-    user = request.user
-    print(user)
-    rsvped_events = RSVP.objects.filter(user=user).order_by('event__date')
-    context = {"rsvped_events": rsvped_events}
-    return render(request, 'dashboard/rsvp_table.html', context)
+    rsvped_events = User.objects.prefetch_related('rsvps').get(id=request.user.id)
+    events = rsvped_events.rsvps.model.objects.get('event')
+    print(events)
+    return render(request, 'dashboard/rsvp_table.html', context={"events": rsvped_events.rsvps.all()})
