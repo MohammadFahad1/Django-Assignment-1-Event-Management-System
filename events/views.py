@@ -181,3 +181,10 @@ def rsvp(request, event_id):
         # rsvp_instance.event.set([event])
         messages.success(request, 'You have RSVPed to this event')
     return redirect('home_page')
+
+def rsvp_list(request):
+    user = request.user
+    print(user)
+    rsvped_events = RSVP.objects.filter(user=user).order_by('event__date')
+    context = {"rsvped_events": rsvped_events}
+    return render(request, 'dashboard/rsvp_table.html', context)

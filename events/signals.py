@@ -11,7 +11,6 @@ def rsvp_event(sender, instance, created, **kwargs):
             user = User.objects.get(id=instance.lastUserRSVPed_id)
             event = Event.objects.get(id=instance.lastEventRSVPed_id)
             recipient_list = [user.email]
-            print(recipient_list)
             subject = f'RSVP Confirmation for {event.name}'
             message = f"""
             Dear {user.first_name},
