@@ -55,7 +55,7 @@ def events(request):
     action = request.GET.get('action', 'all')
     if action == 'add':
         if request.method == 'POST':
-            event_form = EventModelForm(request.POST)
+            event_form = EventModelForm(request.POST, request.FILES)
             if event_form.is_valid():
                 event_form.save()
                 messages.success(request, 'Event added successfully')
@@ -73,7 +73,7 @@ def update_event(request, id):
     event_form = EventModelForm(instance=event)
 
     if request.method == "POST":
-        event_form = EventModelForm(request.POST, instance=event)
+        event_form = EventModelForm(request.POST, instance=event, files=request.FILES)
         if event_form.is_valid():
             event_form.save()
             messages.success(request, "Event updated successfully")

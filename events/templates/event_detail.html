@@ -13,7 +13,7 @@
         {% include "header_navbar.html" %}
         <main>
             <section class="my-10 p-10 bg-gray-950">
-                <img src="{% static "images/event1.jpg" %}" class="mx-auto block" alt="">
+                <img src="{{ event.thumbnail.url }}" class="max-h-52 w-full object-cover" alt="{{event.name}} thumbnail">
                 <h2 class="text-slate-100 text-3xl font-bold my-5">{{event.name}}</h2>
 
                 {% comment %} Event Date & Category Section {% endcomment %}
@@ -69,7 +69,7 @@
                         {% for participant in event.participants.all %}
                             <div class="p-4 border rounded-lg shadow-md text-center">
                                 <img src="{% static "images/male-user.png" %}" class="w-40 h-40 rounded-full block mx-auto" alt="">
-                                <h3 class="font-semibold text-slate-200">{{participant.name}}</h3>
+                                <h3 class="font-semibold text-slate-200">{{participant.first_name}} {{participant.last_name}}</h3>
                                 <p class="text-sm text-gray-500">{{participant.email}}</p>
                             </div>
                         {% endfor %}

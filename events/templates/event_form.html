@@ -2,7 +2,7 @@
 
 {% block title %}Events - CRUD{% endblock title %}
 {% block content %}
-<form method="post">
+<form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Submit" class="bg-blue-500 px-5 py-2 rounded text-white cursor-pointer">
