@@ -14,9 +14,6 @@ def is_organizer(user):
 def is_participant(user):
     return user.groups.filter(name='Participant').exists()
 
-def is_admin(user):
-    return user.groups.filter(name='Admin').exists()
-
 def home_page(request):
     search = request.GET.get('search', '')
     today = now().date()
