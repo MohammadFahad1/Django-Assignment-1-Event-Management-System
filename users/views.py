@@ -5,6 +5,11 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.tokens import default_token_generator
 from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+# Test for users
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists()
 
 # Create your views here.
 def sign_up(request):
@@ -42,6 +47,7 @@ def sign_in(request):
 
     return render(request, 'registration/login.html')
 
+@login_required
 def sign_out(request):
     if request.method == 'POST':
         messages.success(request, 'Logged out successfully')
@@ -65,7 +71,9 @@ def activate_user(request, user_id, token):
     except User.DoesNotExist:
         messages.error(request, 'Invalid activation link')
         return redirect('sign-in')
-    
+
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def admin_dashboard(request):
     users = User.objects.all()
     return render(request, 'admin/dashboard.html', {"users": users})
