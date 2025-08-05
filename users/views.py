@@ -78,6 +78,8 @@ def admin_dashboard(request):
     users = User.objects.all()
     return render(request, 'admin/dashboard.html', {"users": users})
 
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def assign_role(request, user_id):
     user = User.objects.get(id=user_id)
     form = AssignRoleForm()
@@ -93,6 +95,8 @@ def assign_role(request, user_id):
 
     return render(request, 'admin/assign_role.html', {"form": form})
 
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def create_group(request):
     form = CreateGroupForm()
 
@@ -106,6 +110,8 @@ def create_group(request):
     
     return render(request, 'admin/create_group.html', {"form": form})
 
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def group_list(request):
     groups = Group.objects.all()
     return render(request, 'admin/group_list.html', {"groups": groups})

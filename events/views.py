@@ -5,6 +5,17 @@ from django.contrib import messages
 from events.models import *
 from django.utils.timezone import now
 from django.db.models import Count, Q
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+
+# Test for users
+def is_organizer(user):
+    return user.groups.filter(name='Organizer').exists()
+
+def is_participant(user):
+    return user.groups.filter(name='Participant').exists()
+
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists()
 
 def home_page(request):
     search = request.GET.get('search', '')
@@ -21,6 +32,8 @@ def event_detail(request, id):
     event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
     return render(request, 'event_detail.html', {"event": event})
 
+@login_required
+@user_passes_test(is_organizer, login_url='no-access')
 def dashboard(request):
     type = request.GET.get('type', 'todays')
     today = now().date()
@@ -50,6 +63,8 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard_home.html', context)
 
+@login_required
+@permission_required('events.add_event', raise_exception=False, login_url='no-access')
 def events(request):
     event_form = EventModelForm()
     action = request.GET.get('action', 'all')
@@ -68,6 +83,8 @@ def events(request):
     context = {"events": events}
     return render(request, 'dashboard/events_table.html', context)
 
+@login_required
+@permission_required('events.change_event', raise_exception=False, login_url='no-access')
 def update_event(request, id):
     event = Event.objects.get(id=id)
     event_form = EventModelForm(instance=event)
@@ -81,12 +98,16 @@ def update_event(request, id):
 
     return render(request, 'event_form.html', {"form": event_form})
 
+@login_required
+@permission_required('events.delete_event', raise_exception=False, login_url='no-access')
 def delete_event(request, id):
     event = Event.objects.get(id=id)
     event.delete()
     messages.success(request, 'Event deleted successfully')
     return redirect('event-list')
 
+@login_required
+@permission_required('auth.view_user', raise_exception=False, login_url='no-access')
 def participants(request):
     participant_form = ParticipantModelForm()
     action = request.GET.get('action', 'all')
@@ -108,6 +129,8 @@ def participants(request):
     participants = User.objects.all().order_by('id')
     return render(request, 'dashboard/participants_table.html', {"participants": participants})
 
+@login_required
+@permission_required('auth.change_user', raise_exception=False, login_url='no-access')
 def update_participant(request, id):
     participant = User.objects.get(id=id)
     participant_form = ParticipantModelForm(instance=participant)
@@ -123,12 +146,16 @@ def update_participant(request, id):
     
     return render(request, 'participant_form.html', {"form": participant_form})
 
+@login_required
+@permission_required('auth.delete_user', raise_exception=False, login_url='no-access')
 def delete_participant(request, id):
     participant = User.objects.get(id=id)
     participant.delete()
     messages.success(request, 'Participant deleted successfully')
     return redirect('participant-list')
 
+@login_required
+@permission_required('events.view_category', raise_exception=False, login_url='no-access')
 def categories(request):
     category_form = CategoryModelForm()
     action = request.GET.get('action', 'all')
@@ -145,6 +172,8 @@ def categories(request):
     context = {"categories": categories}
     return render(request, 'dashboard/category_table.html', context)
 
+@login_required
+@permission_required('events.change_category', raise_exception=False, login_url='no-access')
 def update_category(request, id):
     category = Category.objects.get(id=id)
     category_form = CategoryModelForm(instance=category)
@@ -159,12 +188,17 @@ def update_category(request, id):
 
     return render(request, 'category_form.html', {"form": category_form})
 
+@login_required
+@permission_required('events.delete_category', raise_exception=False, login_url='no-access')
 def delete_category(request, id):
     category = Category.objects.get(id=id)
     category.delete()
     messages.success(request, 'Category deleted successfully')
     return redirect('category-list')
 
+@login_required
+@user_passes_test(is_participant, login_url='no-access')
+@permission_required('events.add_rsvp', raise_exception=False, login_url='no-access')
 def rsvp(request, event_id):
     event = Event.objects.get(id=event_id)
     user = request.user
@@ -182,6 +216,9 @@ def rsvp(request, event_id):
         messages.success(request, 'You have RSVPed to this event')
     return redirect('home_page')
 
+@login_required
+@user_passes_test(is_participant, login_url='no-access')
+@permission_required('events.view_rsvp', raise_exception=False, login_url='no-access')
 def rsvp_list(request):
     rsvped_events = User.objects.prefetch_related('rsvps').get(id=request.user.id)
     events = rsvped_events.rsvps.model.objects.get('event')
