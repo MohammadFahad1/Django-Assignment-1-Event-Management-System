@@ -1,6 +1,10 @@
 {% extends "dashboard/dashboard.html" %}
 
 {% block title %}Events - CRUD{% endblock title %}
+{% block dashboard-type %}
+    Organizer
+{% endblock dashboard-type %}
+
 {% block content %}
 <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
     {% csrf_token %}

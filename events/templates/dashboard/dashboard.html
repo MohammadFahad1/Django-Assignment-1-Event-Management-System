@@ -12,7 +12,9 @@
 <body class="bg-[#F4F4F4]">
     <main class="flex flex-col md:flex-row justify-between min-h-screen">
         <nav class="w-full md:w-3/12 bg-[#3D69FF] text-white relative">
-            <a href="/dashboard"><h1 class="text-white font-extrabold text-3xl text-center pt-5 pb-9">Organizer Dashboard</h1></a>
+            <a href="/dashboard"><h1 class="text-white font-extrabold text-3xl text-center pt-5 pb-9">
+            {% block dashboard-type %}{% endblock dashboard-type %}
+                 Dashboard</h1></a>
             <div class="flex flex-wrap flex-row gap-4 md:flex-col">
                 <a href="/dashboard" class="flex gap-3 items-center w-full p-5 hover:bg-[#1B44EC] hover:font-bold duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
