@@ -31,12 +31,12 @@
                             
                             <p class="pb-5">The Event Management System (EMS) is a comprehensive system for managing events, conferences, and meetings.</p>
 
-                            <a href="#events" class="uppercase text-sm bg-[#FC00D5] hover:bg-[#a1238e] px-5 py-3 font-bold rounded-full">See Events</a>
+                            <a href="#events" class="uppercase text-sm bg-[#CAEFD1] hover:bg-[#8bf39e] px-5 py-3 font-bold rounded-full text-black">See Events</a>
                         </div>
                     </div>
 
                     <div>
-                        <img src="{% static "images/hero-img.webp" %}" class="w-full" alt="">
+                        <img src="{% static 'images/hero-img.png' %}" class="w-fullmax-w-[860px] max-h-[930px]" alt="">
                     </div>
                 </section>
                 {% comment %} Hero Section Ends {% endcomment %}
@@ -44,7 +44,7 @@
 
             {% comment %} List of all Events {% endcomment %}
              <section class="my-24" id="events">
-                <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">LIST OF EVENTS</h1>
+                <h1 class="text-4xl text-[#CAEFD1] text-center font-bold my-16">LIST OF EVENTS</h1>
                 {% if search %}
                     <h3 class="text-2xl text-slate-100 text-center font-bold mb-16">{{events.count}} records found for "{{search_txt}}"</h3>
                 {% endif %}
@@ -65,20 +65,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {% for event in events %}
                     {% comment %} Card Items Starts {% endcomment %}
-                    <div class="border-2 border-[#FC00D5] relative top-0 left-0">
+                    <div class="border-2 border-[#CAEFD1] relative top-0 left-0">
                         <img src="{{ event.thumbnail.url }}" alt="{{event.name}} thumbnail" class="w-full h-40 object-cover">
-                        <div class="absolute top-4 left-4 bg-[#FC00D5] p-4 text-center">
+                        <div class="absolute top-4 left-4 bg-[#CAEFD1] p-4 text-center">
                             <h4 class="text-xl font-extrabold">{{event.date|date:"d"}}</h4>
                             <p>{{event.date|date:"F"}}</p>
                         </div>
-                        <div class="p-2 border-s-4 border-[#FC00D5] my-3">
+                        <div class="p-2 border-s-4 border-[#CAEFD1] my-3">
                             <h3 class="text-2xl font-bold text-slate-100">{{event.name}}</h3>
-                            <h4 class="text-xl font-bold text-[#FC00D5]">Category: {{event.category}}</h4>
+                            <h4 class="text-xl font-bold text-[#CAEFD1]">Category: {{event.category}}</h4>
                             <p class="text-slate-300 my-2"><b>Description:</b> {{event.description|slice:":50"}}...</p>
                         </div>
                         <div class="p-2 text-slate-300">
                             <div class="flex gap-3 my-2">
-                                <div class="p-1 rounded-full bg-[#FC00D5] text-sm">
+                                <div class="p-1 rounded-full bg-[#CAEFD1] text-sm text-black">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="flex gap-3 my-2">
-                                <div class="p-1 rounded-full bg-[#FC00D5] text-sm">
+                                <div class="p-1 rounded-full bg-[#CAEFD1] text-sm text-black">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
@@ -97,7 +97,7 @@
                             </div>
 
                             <div class="flex gap-3 my-2">
-                                <div class="p-1 rounded-full bg-[#FC00D5] text-sm">
+                                <div class="p-1 rounded-full bg-[#CAEFD1] text-sm text-black">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                                     </svg>
@@ -105,7 +105,7 @@
                                 <span>{{ event.participants_count }} Participants</span>
                             </div>
                             <div class="flex justify-between items-center gap-3 my-2">
-                                <a href="{% url "event-detail" event.id %}" class="block px-5 py-3 hover:bg-[#FC00D5] text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#FC00D5] w-full">Details</a>
+                                <a href="{% url "event-detail" event.id %}" class="block px-5 py-3 hover:bg-[#CAEFD1] text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#CAEFD1] hover:border-[#7dfa94] w-full hover:text-black">Details</a>
                                 <a href="{% url "rsvp" event.id %}" class="block px-5 py-3 hover:bg-[#fcc500] hover:text-black text-xl text-center font-bold my-5 rounded transition-colors border-2 border-[#fcc500]">RSVP</a>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
 
             {% comment %} Contact Form Section Starts {% endcomment %}
             <section class="w-full shadow-lg bg-transparent rounded-2xl p-6" id="contact">
-                <h1 class="text-4xl text-[#FC00D5] text-center font-bold my-16">CONTACT US</h1>
+                <h1 class="text-4xl text-[#CAEFD1] text-center font-bold my-16">CONTACT US</h1>
 
                 <form action="" method="POST" class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -127,32 +127,32 @@
                         <div>
 
                             <input type="text" placeholder="Enter your name"
-                                class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                                class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CAEFD1]">
                         </div>
 
                         <!-- Email Field -->
                         <div>
                             <input type="email" placeholder="Enter your email"
-                                class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                                class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CAEFD1]">
                         </div>
                     </div>
 
                     <!-- Subject Field -->
                     <div>
                         <input type="text" placeholder="Enter subject"
-                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]">
+                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CAEFD1]">
                     </div>
 
                     <!-- Message Field -->
                     <div>
                         <textarea rows="8" placeholder="Enter your message"
-                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FC00D5]"></textarea>
+                            class="w-full border border-gray-300 bg-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CAEFD1]"></textarea>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="text-center">
                         <button type="submit"
-                            class="w-full text-white font-semibold py-2 border-2 border-[#FC00D5] hover:bg-[#FC00D5] rounded-lg transition duration-300">
+                            class="w-full text-white font-semibold py-2 border-2 border-[#CAEFD1] hover:bg-[#CAEFD1] rounded-lg transition duration-300">
                             Send Message
                         </button>
                     </div>

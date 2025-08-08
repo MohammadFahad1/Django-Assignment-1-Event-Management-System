@@ -6,8 +6,8 @@
     {% comment %} Logo {% endcomment %}
     <a href="/">
       <div class="text-2xl p-2 rounded-lg font-bold flex gap-2 items-center">
-        <img src="{% static "images/logo-ev.png" %}" class="w-14" alt="">
-        <h1>EVMS</h1>
+        <img src="{% static 'images/logo-ev.png' %}" class="w-14" alt="">
+        <h1 class="text-[#CAEFD1]">Event Horizon</h1>
       </div>
     </a>
 
@@ -24,23 +24,23 @@
           name="search"
           id="search"
           value="{% if search %}{{search_txt}}{% endif %}"
-          class="bg-transparent border border-[#FA00D5] px-10 py-2 rounded-lg w-full"
+          class="bg-transparent border border-[#CAEFD1] px-10 py-2 rounded-lg w-full"
           placeholder="Search for events"
         />
         <input
           type="submit"
           value="Search"
-          class="bg-[#FA00D5] p-2 rounded-lg cursor-pointer"
+          class="bg-[#CAEFD1] p-2 rounded-lg cursor-pointer text-black font-bold hover:bg-[#CAEFD1]/80 transition-all duration-300"
         />
       </form>
-      <a href="/" class="hover:text-[#FA00D5]">HOME</a>
-      <a href="#events" class="hover:text-[#FA00D5]">EVENTS</a>
-      <a href="#contact" class="hover:text-[#FA00D5]">CONTACT US</a>
+      <a href="/" class="hover:text-[#CAEFD1]">HOME</a>
+      <a href="{% url 'home_page' %}#events" class="hover:text-[#CAEFD1]">EVENTS</a>
+      <a href="{% url 'home_page' %}#contact" class="hover:text-[#CAEFD1]">CONTACT US</a>
 
       {% if request.user.is_authenticated %}
       <a
         href="/dashboard"
-        class="hover:text-[#FA00D5] bg-blue-600 text-white rounded-lg px-2 py-1"
+        class="hover:text-[#CAEFD1] bg-blue-600 text-white rounded-lg px-2 py-1"
         >DASHBOARD</a
       >
       <form action="{% url 'sign-out' %}" method="post">
@@ -55,12 +55,12 @@
       {% else %}
       <a
         href="{% url 'sign-in' %}"
-        class="hover:text-[#FA00D5] bg-blue-600 text-white rounded-lg px-2 py-1"
+        class="hover:text-[#CAEFD1] bg-blue-600 text-white rounded-lg px-2 py-1"
         >SIGN IN</a
       >
       <a
         href="{% url 'sign-up' %}"
-        class="hover:text-[#FA00D5] bg-blue-600 text-white rounded-lg px-2 py-1"
+        class="hover:text-[#CAEFD1] bg-blue-600 text-white rounded-lg px-2 py-1"
         >SIGN UP</a
       >
       {% endif %}
