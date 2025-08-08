@@ -127,7 +127,7 @@ def participants(request):
             
         return render(request, 'participant_form.html', {"form": participant_form})
 
-    participants = User.objects.all().order_by('id')
+    participants = User.objects.all().prefetch_related('participants').order_by('id')
     return render(request, 'dashboard/participants_table.html', {"participants": participants})
 
 @login_required
@@ -212,6 +212,8 @@ def rsvp(request, event_id):
         event.rsvps.add(rsvp_instance)
         user.rsvps.add(rsvp_instance)
         rsvp_instance.save()
+        # Add the user to the event's participant list
+        event.participants.add(user)
         # rsvp_instance.user.set([user])
         # rsvp_instance.event.set([event])
         messages.success(request, 'You have RSVPed to this event')
@@ -219,12 +221,11 @@ def rsvp(request, event_id):
 
 @login_required
 @user_passes_test(is_participant, login_url='no-access')
-@permission_required('events.view_rsvp', raise_exception=False, login_url='no-access')
 def rsvp_list(request):
-    rsvped_events = User.objects.prefetch_related('rsvps').get(id=request.user.id)
-    events = rsvped_events.rsvps.model.objects.get('event')
-    print(events)
-    return render(request, 'dashboard/rsvp_table.html', context={"events": rsvped_events.rsvps.all()})
+    user = request.user
+    # user_rsvps = user.rsvps.all()
+    rsvped_events = user.participants.all()
+    return render(request, 'dashboard/rsvp_table.html', context={"events": rsvped_events})
 
 @login_required
 def dashboard(request):

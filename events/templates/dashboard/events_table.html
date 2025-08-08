@@ -37,7 +37,7 @@
                 <td class="p-2 flex -space-x-2">
                     {% for participant in event.participants.all %}
                         <div class="w-8 h-8 my-3 bg-blue-500 rounded-full text-white flex items-center justify-center text-sm border-2 border-white">
-                        {{participant.name|slice:":2"}}
+                        {{participant.first_name|slice:":2"}}
                         </div>
                     {% endfor %}
                 </td>

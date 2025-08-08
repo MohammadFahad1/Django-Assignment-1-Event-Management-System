@@ -26,7 +26,7 @@
             <tr class="border-b hover:bg-gray-100">
                 <td class="p-2">{{participant.first_name}} {{participant.last_name}}</td>
                 <td class="p-2">{{participant.email}}</td>
-                <td class="p-2 text-center">{{participant.event.count}}</td>
+                <td class="p-2 text-center">{{participant.participants.count}}</td>
                 <td class="p-2">
                     <div class="flex gap-2 justify-center">
                         <a href="{% url "update-participant" participant.id %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
