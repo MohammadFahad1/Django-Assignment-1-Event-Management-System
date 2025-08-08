@@ -15,6 +15,7 @@ def is_organizer(user):
 def is_participant(user):
     return user.groups.filter(name='Participant').exists()
 
+# Home page view
 def home_page(request):
     search = request.GET.get('search', '')
     today = now().date()
@@ -26,10 +27,12 @@ def home_page(request):
     events = Event.objects.select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
     return render(request, 'home_page.html', {"events": events, "today": today})
 
+# Event detail view
 def event_detail(request, id):
     event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
     return render(request, 'event_detail.html', {"event": event})
 
+# Organizer dashboard view
 @login_required
 @user_passes_test(is_organizer, login_url='no-access')
 def organizer_dashboard(request):
