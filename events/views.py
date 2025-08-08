@@ -6,11 +6,10 @@ from events.models import *
 from django.utils.timezone import now
 from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
-from users.views import is_admin
 
 # Test for users
-def is_organizer(user):
-    return user.groups.filter(name='Organizer').exists()
+def is_admin_or_organizer(user):
+    return user.groups.filter(name__in=['Admin', 'Organizer']).exists()
 
 def is_participant(user):
     return user.groups.filter(name='Participant').exists()
@@ -34,7 +33,7 @@ def event_detail(request, id):
 
 # Organizer dashboard view
 @login_required
-@user_passes_test(is_organizer, login_url='no-access')
+@user_passes_test(is_admin_or_organizer, login_url='no-access')
 def organizer_dashboard(request):
     type = request.GET.get('type', 'todays')
     today = now().date()
@@ -228,11 +227,9 @@ def rsvp_list(request):
 
 @login_required
 def dashboard(request):
-    if is_organizer(request.user):
-        return redirect('organizer-dashboard')
+    if is_admin_or_organizer(request.user):
+        return redirect('main-dashboard')
     elif is_participant(request.user):
-        return redirect('participant-dashboard')
-    elif is_admin(request.user):
-        return redirect('admin-dashboard')
+        return redirect('rsvp-list')
     else:
         return redirect('no-access')

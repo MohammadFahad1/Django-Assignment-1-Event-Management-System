@@ -74,9 +74,9 @@ def activate_user(request, user_id, token):
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
-def admin_dashboard(request):
+def user_list(request):
     users = User.objects.all()
-    return render(request, 'admin/dashboard.html', {"users": users})
+    return render(request, 'admin/user_list.html', {"users": users})
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
