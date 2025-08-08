@@ -6,6 +6,7 @@ from events.models import *
 from django.utils.timezone import now
 from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from users.views import is_admin
 
 # Test for users
 def is_admin_or_organizer(user):
@@ -107,7 +108,7 @@ def delete_event(request, id):
     return redirect('event-list')
 
 @login_required
-@permission_required('auth.view_user', raise_exception=False, login_url='no-access')
+@user_passes_test(is_admin, login_url='no-access')
 def participants(request):
     participant_form = ParticipantModelForm()
     action = request.GET.get('action', 'all')
@@ -130,7 +131,7 @@ def participants(request):
     return render(request, 'dashboard/participants_table.html', {"participants": participants})
 
 @login_required
-@permission_required('auth.change_user', raise_exception=False, login_url='no-access')
+@user_passes_test(is_admin, login_url='no-access')
 def update_participant(request, id):
     participant = User.objects.get(id=id)
     participant_form = ParticipantModelForm(instance=participant)
@@ -147,7 +148,7 @@ def update_participant(request, id):
     return render(request, 'participant_form.html', {"form": participant_form})
 
 @login_required
-@permission_required('auth.delete_user', raise_exception=False, login_url='no-access')
+@user_passes_test(is_admin, login_url='no-access')
 def delete_participant(request, id):
     participant = User.objects.get(id=id)
     participant.delete()

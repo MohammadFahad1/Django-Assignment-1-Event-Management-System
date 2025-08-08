@@ -112,6 +112,14 @@ def create_group(request):
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
+def delete_group(request, group_id):
+    group = Group.objects.get(id=group_id)
+    group.delete()
+    messages.success(request, f'Group {group.name} has been deleted successfully')
+    return redirect('group_list')
+
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def group_list(request):
     groups = Group.objects.all()
     return render(request, 'admin/group_list.html', {"groups": groups})

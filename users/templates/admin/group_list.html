@@ -1,6 +1,37 @@
 {% extends 'dashboard/dashboard.html' %}
 {% block title %}Groups List{% endblock title %} 
 {% block content %}
+
+{% comment %} Show messages {% endcomment %}
+{% if messages %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  {% for message in messages %}
+  <div class="text-red-500 text-sm mb-2">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% comment %} Show errors {% endcomment %}
+{% if form.errors %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <ul class="text-red-500 text-sm">
+    {% for field, errors in form.errors.items %}
+    <li>{{ field }}: {{ errors|join:", " }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% comment %} Show success messages {% endcomment %}
+{% if request.GET.success %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <div class="text-green-500 text-sm">
+    {{ request.GET.success }}
+  </div>
+</div>
+{% endif %}
+
 <div class="flex justify-between px-5 py-3 border-b border-gray-200 bg-gray-100">
   <h1 class="text-lg font-semibold text-gray-700">Groups List</h1>
   <a
@@ -28,6 +59,11 @@
         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
       >
         Permissions
+      </th>
+      <th
+        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+      >
+        Action
       </th>
     </tr>
   </thead>
@@ -68,6 +104,11 @@
           </span>
           {% endfor %}
         </p>
+      </td>
+      <td class="px-2 py-1 border-2 border-gray-200">
+        <a href="{% url 'delete-group' group.id %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+        Delete
+        </a>
       </td>
     </tr>
     {% endfor %} {% comment %} Body ends {% endcomment %}
