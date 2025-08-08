@@ -41,7 +41,7 @@ def sign_in(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Logged in successfully")
-            return redirect('home_page')
+            return redirect('dashboard')
         else:
             messages.error(request, 'Invalid username or password')
 
