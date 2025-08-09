@@ -1,4 +1,4 @@
-# import dj_database_url
+import dj_database_url
 from decouple import config
 
 """
@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
     }
 } """
 
-# For Postgres
+""" # For Postgres
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -110,15 +110,15 @@ DATABASES = {
         'PORT': config('DB_PORT', default=587, cast=int)
     }
 }
-
-""" # SQLite DATABASES configuration with PostgreSQL:
+ """
+# Render DATABASES configuration with PostgreSQL:
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://event_management_iy3v_user:RXdITp5t5MH91GQ10epqVCPJh92Fe6dG@dpg-cv28t0ggph6c73bdvq5g-a.oregon-postgres.render.com/event_management_iy3v',
+        default=config('RENDER_DATABASE_URL', default='', cast=str),
         conn_max_age=600
     )
-} """
+}
 
 
 # Password validation
