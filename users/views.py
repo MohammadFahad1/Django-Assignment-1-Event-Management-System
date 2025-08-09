@@ -91,7 +91,7 @@ def assign_role(request, user_id):
             user.groups.add(role)
             user.save()
             messages.success(request, f'User {user.username} has been assigned to the {role.name} role')
-            return redirect('admin-dashboard')
+            return redirect('user-list')
 
     return render(request, 'admin/assign_role.html', {"form": form})
 
