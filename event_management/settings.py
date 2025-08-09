@@ -114,9 +114,9 @@ DATABASES = {
 # Render DATABASES configuration with PostgreSQL:
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
         default=config('RENDER_DATABASE_URL', default='', cast=str),
-        conn_max_age=600
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 
