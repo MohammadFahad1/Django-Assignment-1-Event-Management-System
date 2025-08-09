@@ -5,7 +5,17 @@ from django.contrib import messages
 from events.models import *
 from django.utils.timezone import now
 from django.db.models import Count, Q
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from users.views import is_admin
 
+# Test for users
+def is_admin_or_organizer(user):
+    return user.groups.filter(name__in=['Admin', 'Organizer']).exists()
+
+def is_participant(user):
+    return user.groups.filter(name='Participant').exists()
+
+# Home page view
 def home_page(request):
     search = request.GET.get('search', '')
     today = now().date()
@@ -17,11 +27,15 @@ def home_page(request):
     events = Event.objects.select_related('category').prefetch_related('participants').annotate(participants_count=Count('participants')).order_by('date')
     return render(request, 'home_page.html', {"events": events, "today": today})
 
+# Event detail view
 def event_detail(request, id):
     event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
     return render(request, 'event_detail.html', {"event": event})
 
-def dashboard(request):
+# Organizer dashboard view
+@login_required
+@user_passes_test(is_admin_or_organizer, login_url='no-access')
+def organizer_dashboard(request):
     type = request.GET.get('type', 'todays')
     today = now().date()
 
@@ -50,12 +64,14 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard_home.html', context)
 
+@login_required
+@permission_required('events.add_event', raise_exception=False, login_url='no-access')
 def events(request):
     event_form = EventModelForm()
     action = request.GET.get('action', 'all')
     if action == 'add':
         if request.method == 'POST':
-            event_form = EventModelForm(request.POST)
+            event_form = EventModelForm(request.POST, request.FILES)
             if event_form.is_valid():
                 event_form.save()
                 messages.success(request, 'Event added successfully')
@@ -68,12 +84,14 @@ def events(request):
     context = {"events": events}
     return render(request, 'dashboard/events_table.html', context)
 
+@login_required
+@permission_required('events.change_event', raise_exception=False, login_url='no-access')
 def update_event(request, id):
     event = Event.objects.get(id=id)
     event_form = EventModelForm(instance=event)
 
     if request.method == "POST":
-        event_form = EventModelForm(request.POST, instance=event)
+        event_form = EventModelForm(request.POST, instance=event, files=request.FILES)
         if event_form.is_valid():
             event_form.save()
             messages.success(request, "Event updated successfully")
@@ -81,12 +99,16 @@ def update_event(request, id):
 
     return render(request, 'event_form.html', {"form": event_form})
 
+@login_required
+@permission_required('events.delete_event', raise_exception=False, login_url='no-access')
 def delete_event(request, id):
     event = Event.objects.get(id=id)
     event.delete()
     messages.success(request, 'Event deleted successfully')
     return redirect('event-list')
 
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def participants(request):
     participant_form = ParticipantModelForm()
     action = request.GET.get('action', 'all')
@@ -105,11 +127,13 @@ def participants(request):
             
         return render(request, 'participant_form.html', {"form": participant_form})
 
-    participants = Participant.objects.prefetch_related('event').all().order_by('id')
+    participants = User.objects.all().prefetch_related('participants').order_by('id')
     return render(request, 'dashboard/participants_table.html', {"participants": participants})
 
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def update_participant(request, id):
-    participant = Participant.objects.get(id=id)
+    participant = User.objects.get(id=id)
     participant_form = ParticipantModelForm(instance=participant)
 
     if request.method == 'POST':
@@ -123,12 +147,16 @@ def update_participant(request, id):
     
     return render(request, 'participant_form.html', {"form": participant_form})
 
+@login_required
+@user_passes_test(is_admin, login_url='no-access')
 def delete_participant(request, id):
-    participant = Participant.objects.get(id=id)
+    participant = User.objects.get(id=id)
     participant.delete()
     messages.success(request, 'Participant deleted successfully')
     return redirect('participant-list')
 
+@login_required
+@permission_required('events.view_category', raise_exception=False, login_url='no-access')
 def categories(request):
     category_form = CategoryModelForm()
     action = request.GET.get('action', 'all')
@@ -145,6 +173,8 @@ def categories(request):
     context = {"categories": categories}
     return render(request, 'dashboard/category_table.html', context)
 
+@login_required
+@permission_required('events.change_category', raise_exception=False, login_url='no-access')
 def update_category(request, id):
     category = Category.objects.get(id=id)
     category_form = CategoryModelForm(instance=category)
@@ -159,8 +189,49 @@ def update_category(request, id):
 
     return render(request, 'category_form.html', {"form": category_form})
 
+@login_required
+@permission_required('events.delete_category', raise_exception=False, login_url='no-access')
 def delete_category(request, id):
     category = Category.objects.get(id=id)
     category.delete()
     messages.success(request, 'Category deleted successfully')
     return redirect('category-list')
+
+@login_required
+@user_passes_test(is_participant, login_url='no-access')
+@permission_required('events.add_rsvp', raise_exception=False, login_url='no-access')
+def rsvp(request, event_id):
+    event = Event.objects.get(id=event_id)
+    user = request.user
+
+    # check if user has already RSVPed
+    if RSVP.objects.filter(event=event, user=user).exists():
+        messages.error(request, 'You have already RSVPed to this event')
+    else:
+        rsvp_instance = RSVP.objects.create(lastUserRSVPed=user, lastEventRSVPed=event)
+        event.rsvps.add(rsvp_instance)
+        user.rsvps.add(rsvp_instance)
+        rsvp_instance.save()
+        # Add the user to the event's participant list
+        event.participants.add(user)
+        # rsvp_instance.user.set([user])
+        # rsvp_instance.event.set([event])
+        messages.success(request, 'You have RSVPed to this event')
+    return redirect('home_page')
+
+@login_required
+@user_passes_test(is_participant, login_url='no-access')
+def rsvp_list(request):
+    user = request.user
+    # user_rsvps = user.rsvps.all()
+    rsvped_events = user.participants.all()
+    return render(request, 'dashboard/rsvp_table.html', context={"events": rsvped_events})
+
+@login_required
+def dashboard(request):
+    if is_admin_or_organizer(request.user):
+        return redirect('main-dashboard')
+    elif is_participant(request.user):
+        return redirect('rsvp-list')
+    else:
+        return redirect('no-access')

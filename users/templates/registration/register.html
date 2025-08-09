@@ -1,45 +1,55 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
     <title>EVMS - User Sign-Up Page</title>
-</head>
-<body>
-    <div class="max-w-[800px] mx-auto p-6">
-        <h1 class="text-3xl font-bold mb-4">Create an account</h1>
+  </head>
+  <body class="bg-black px-5">
+    {% include 'header_navbar.html' %}
+    <div class="max-w-[800px] mx-auto p-6 bg-gray-300 rounded-lg mt-10">
+      <h1 class="text-3xl font-bold mb-4">Create an account</h1>
+      <div>
+        {% comment %} Messages {% endcomment %}
         <div>
-            {% comment %} Messages {% endcomment %}
-            <div>
-                {% for message in messages %}
-                    <p style="background: green; padding: 8px; color: #fff;">{{message}}</p>
-                {% endfor %}
-            <div>
-                {% for error in form.non_field_errors %}
-                    <p style="background: red; padding: 8px; color: #fff;">{{error}}</p>
-                {% endfor %}
-            </div>
-
-            <form action="" method="POST">
-                {% csrf_token %}
-                {% for field in form %}
-                    <p>
-                    <label for="{{field.id_for_label}}">{{field.label}}</label>
-                        {{field}}
-                    </p>
-                    {% if field.errors %}
-                        <ul>
-                        {% for error in field.errors %}
-                            <li style="color: red;">{{error}}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endfor %}
-                <button type="submit" class="text-white px-3 py-2 bg-[#FC00D5] rounded mt-5">Sign Up</button>
-            </form>
+          {% for message in messages %}
+          <p style="background: green; padding: 8px; color: #fff">
+            {{message}}
+          </p>
+          {% endfor %}
         </div>
+        <div>
+          {% for error in form.non_field_errors %}
+          <p style="background: red; padding: 8px; color: #fff">{{error}}</p>
+          {% endfor %}
+        </div>
+
+        <form action="" method="POST">
+          {% csrf_token %} {% for field in form %}
+          <p>
+            <label for="{{field.id_for_label}}">{{field.label}}</label>
+            {{field}}
+          </p>
+          {% if field.errors %}
+          <ul>
+            {% for error in field.errors %}
+            <li style="color: red">{{error}}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endfor %}
+          <button
+            type="submit"
+            class="py-2 px-4 bg-[#CAEFD1] text-black rounded mt-2 border-2 border-[#017015]"
+          >
+            Sign Up
+          </button>
+          Already have an account?
+          <a href="{% url 'sign-in' %}" class="text-[#018018]">Sign In</a>
+        </form>
+      </div>
     </div>
-</body>
+    {% include 'footer.html' %}
+  </body>
 </html>

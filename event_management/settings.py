@@ -1,4 +1,5 @@
 # import dj_database_url
+from decouple import config
 
 """
 Django settings for event_management project.
@@ -22,7 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tsh+4czi%j%hhevnw4tp30cl%f6=4im(iori-g%3wd83ep5898'
+SECRET_KEY = config('SECRET_KEY', cast=str)
+
+# Login Urls
+LOGIN_URL = 'sign-in'
+LOGIN_REDIRECT_URL = 'home'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -98,11 +103,11 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'event_management',
-        'USER': 'postgres',
-        'PASSWORD': '787898',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': config('DB_NAME', default='', cast=str),
+        'USER': config('DB_USER', default='', cast=str),
+        'PASSWORD': config('DB_PASSWORD', default='', cast=str),
+        'HOST': config('DB_HOST', default='localhost', cast=str),
+        'PORT': config('DB_PORT', default=587, cast=int)
     }
 }
 
@@ -156,7 +161,20 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static/'
 ]
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', cast=str)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
+
+# Front end URL
+FRONTEND_URL = 'http://127.0.0.1:8000/'

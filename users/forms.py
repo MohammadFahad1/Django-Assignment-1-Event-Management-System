@@ -1,7 +1,7 @@
 from django import forms
 import re
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
 
@@ -86,5 +86,21 @@ class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
         if commit:
+            user.is_active = False
             user.save()
         return user
+
+class AssignRoleForm(StyledFormMixin, forms.Form):
+    role = forms.ModelChoiceField(queryset=Group.objects.all(), empty_label="Select a role")
+
+class CreateGroupForm(StyledFormMixin, forms.ModelForm):
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget= forms.CheckboxSelectMultiple,
+        required=False,
+        label='Assign Permission'
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name', 'permissions']

@@ -1,0 +1,15 @@
+{% extends 'dashboard/dashboard.html' %} 
+{% block title %} Create Group - Admin Dashboard {% endblock title %} 
+{% block content %}
+<div>
+  {% for message in messages %}
+  <p style="background: green; padding: 8px; color: #fff">{{message}}</p>
+  {% endfor %}
+  <form method="post">
+    {% csrf_token %} {{form}}
+    <button type="submit" class="py-2 px-4 bg-blue-600 text-white rounded mt-2">
+      Create Group
+    </button>
+  </form>
+</div>
+{% endblock content %}

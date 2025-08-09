@@ -1,0 +1,46 @@
+{% extends "dashboard/dashboard.html" %}
+
+{% block title %}RSVP'd Event List{% endblock title %}
+{% block content %}
+<div class="flex justify-between items-center">
+    <h2 class="text-3xl font-bold text-slate-900 my-3">RSVP'd Events</h2>
+    <div></div>
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="p-3 bg-green-400 text-white">{{message}}</div>
+    {% endfor %}
+{% endif %}
+<table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden text-sm">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="p-2 text-left">Name</th>
+            <th class="p-2 text-left">Description</th>
+            <th class="p-2 text-left">Date</th>
+            <th class="p-2 text-left">Time</th>
+            <th class="p-2 text-left">Location</th>
+            <th class="p-2 text-left">Category</th>
+            <th class="p-2 text-left">Participants</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+            <tr class="border-b hover:bg-gray-100">
+                <td class="p-2">{{event.name}}</td>
+                <td class="p-2">{{event.description|slice:":100"}}...</td>
+                <td class="p-2">{{event.date}}</td>
+                <td class="p-2">{{event.time}}</td>
+                <td class="p-2">{{event.location}}</td>
+                <td class="p-2">{{event.category}}</td>
+                <td class="p-2 flex -space-x-2">
+                    {% for participant in event.participants.all %}
+                        <div class="w-8 h-8 my-3 bg-blue-500 rounded-full text-white flex items-center justify-center text-sm border-2 border-white">
+                        {{participant.first_name|slice:":2"}}
+                        </div>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

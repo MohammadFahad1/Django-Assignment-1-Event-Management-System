@@ -1,4 +1,8 @@
 from django import forms
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
 from events.models import *
 
 class StyledFormMixin:
@@ -51,7 +55,7 @@ class StyledFormMixin:
             else:
                 field.widget.attrs.update({
                     'class': self.default_classes,
-                    'placeholder': f'Enter {field.label.lower()}'
+                    'placeholder': f'Enter {field.label}'
                 })
 
 class CategoryModelForm(StyledFormMixin, forms.ModelForm):
@@ -68,7 +72,7 @@ class EventModelForm(StyledFormMixin, forms.ModelForm):
 
 class ParticipantModelForm(StyledFormMixin, forms.ModelForm):
     class Meta:
-        model = Participant
+        model = User
         exclude = []
         widgets = {
             'event': forms.CheckboxSelectMultiple(attrs={'class': 'border-2 border-gray-500'})
