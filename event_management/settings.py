@@ -177,4 +177,4 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
 
 # Front end URL
-FRONTEND_URL = 'https://django-assignment-1-event-management.onrender.com/'
+FRONTEND_URL = config('FRONTEND_URL', default='http://127.0.0.1:8000', cast=str)
