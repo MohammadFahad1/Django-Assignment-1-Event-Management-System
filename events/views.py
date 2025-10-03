@@ -192,13 +192,15 @@ def update_category(request, id):
 
     return render(request, 'category_form.html', {"form": category_form})
 
-@login_required
-@permission_required('events.delete_category', raise_exception=False, login_url='no-access')
-def delete_category(request, id):
-    category = Category.objects.get(id=id)
-    category.delete()
-    messages.success(request, 'Category deleted successfully')
-    return redirect('category-list')
+# Delete Category using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('events.delete_category', raise_exception=False, login_url='no-access'), name='dispatch')
+class DeleteCategoryView(View):
+    def get(self, request, id):
+        category = Category.objects.get(id=id)
+        category.delete()
+        messages.success(request, "Category deleted successfully")
+        return redirect('category-list')
 
 # RSVP using class based view
 @method_decorator(login_required, name='dispatch')
