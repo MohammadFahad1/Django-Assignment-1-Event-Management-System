@@ -158,24 +158,6 @@ def delete_participant(request, id):
     messages.success(request, 'Participant deleted successfully')
     return redirect('participant-list')
 
-""" @login_required
-@permission_required('events.view_category', raise_exception=False, login_url='no-access')
-def categories(request):
-    category_form = CategoryModelForm()
-    action = request.GET.get('action', 'all')
-    if action == 'add':
-        if request.method == 'POST':
-            category_form = CategoryModelForm(request.POST)
-            if category_form.is_valid():
-                category_form.save()
-                messages.success(request, 'Category added successfully')
-                return redirect("category-list")
-        return render(request, 'category_form.html', {"form": category_form})
-    
-    categories = Category.objects.prefetch_related('event_category').all().order_by('id')
-    context = {"categories": categories}
-    return render(request, 'dashboard/category_table.html', context) """
-
 # Categories view using class based view
 @method_decorator(login_required, name='dispatch')
 @method_decorator(permission_required('events.view_category', raise_exception=False, login_url='no-access'), name='dispatch')
