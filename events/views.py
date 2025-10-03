@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from users.views import is_admin
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 from django.views import View
 from django.utils.decorators import method_decorator
 
@@ -176,21 +176,25 @@ def categories(request):
     context = {"categories": categories}
     return render(request, 'dashboard/category_table.html', context)
 
-@login_required
-@permission_required('events.change_category', raise_exception=False, login_url='no-access')
-def update_category(request, id):
-    category = Category.objects.get(id=id)
-    category_form = CategoryModelForm(instance=category)
-    if request.method == 'POST':
-        category_form = CategoryModelForm(request.POST, instance=category)
-        if category_form.is_valid():
-            category_form.save()
-            messages.success(request, "Category updated successfully")
-            return redirect('category-list')
-        else:
-            messages.error('Something went wrong while updating category')
 
-    return render(request, 'category_form.html', {"form": category_form})
+# Update Category using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('events.change_category', raise_exception=False, login_url='no-access'), name='dispatch')
+class UpdateCategoryView(UpdateView):
+    model = Category
+    form_class = CategoryModelForm
+    template_name = 'category_form.html'
+    pk_url_kwarg = 'id'
+    context_object_name = 'form'
+    success_url = '/categories/'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Category updated successfully")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Something went wrong while updating category")
+        return super().form_invalid(form)
 
 # Delete Category using class based view
 @method_decorator(login_required, name='dispatch')
