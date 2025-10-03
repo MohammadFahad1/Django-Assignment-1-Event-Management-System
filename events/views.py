@@ -7,6 +7,9 @@ from django.utils.timezone import now
 from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from users.views import is_admin
+from django.views.generic import ListView
+from django.views import View
+from django.utils.decorators import method_decorator
 
 # Test for users
 def is_admin_or_organizer(user):
@@ -197,35 +200,40 @@ def delete_category(request, id):
     messages.success(request, 'Category deleted successfully')
     return redirect('category-list')
 
-@login_required
-@user_passes_test(is_participant, login_url='no-access')
-@permission_required('events.add_rsvp', raise_exception=False, login_url='no-access')
-def rsvp(request, event_id):
-    event = Event.objects.get(id=event_id)
-    user = request.user
+# RSVP using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_participant, login_url='no-access'), name='dispatch')
+@method_decorator(permission_required('events.add_rsvp', raise_exception=False, login_url='no-access'), name='dispatch')
+class RSVPView(View):
+    def get(self, request, event_id):
+        event = Event.objects.get(id=event_id)
+        user = request.user
 
-    # check if user has already RSVPed
-    if RSVP.objects.filter(event=event, user=user).exists():
-        messages.error(request, 'You have already RSVPed to this event')
-    else:
-        rsvp_instance = RSVP.objects.create(lastUserRSVPed=user, lastEventRSVPed=event)
-        event.rsvps.add(rsvp_instance)
-        user.rsvps.add(rsvp_instance)
-        rsvp_instance.save()
-        # Add the user to the event's participant list
-        event.participants.add(user)
-        # rsvp_instance.user.set([user])
-        # rsvp_instance.event.set([event])
-        messages.success(request, 'You have RSVPed to this event')
-    return redirect('home_page')
+        if RSVP.objects.filter(event=event, user=user).exists():
+            messages.error(request, 'You have already RSVPed to this event')
+        else:
+            rsvp_instance = RSVP.objects.create(lastUserRSVPed=user, lastEventRSVPed=event)
+            event.rsvps.add(rsvp_instance)
+            user.rsvps.add(rsvp_instance)
+            rsvp_instance.save()
 
-@login_required
-@user_passes_test(is_participant, login_url='no-access')
-def rsvp_list(request):
-    user = request.user
-    # user_rsvps = user.rsvps.all()
-    rsvped_events = user.participants.all()
-    return render(request, 'dashboard/rsvp_table.html', context={"events": rsvped_events})
+            event.participants.add(user)
+            messages.success(request, 'You have RSVPed to this event')
+
+        return redirect('home_page')
+    
+
+# RSVP List using Class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_participant, login_url='no-access'), name='dispatch')
+class RSVPListView(ListView):
+    model = Event
+    template_name = 'dashboard/rsvp_table.html'
+    context_object_name = 'events'
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.participants.all()
 
 @login_required
 def dashboard(request):
