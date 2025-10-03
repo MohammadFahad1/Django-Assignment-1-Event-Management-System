@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
     }
 } """
 
-""" # For Postgres
+# For Postgres
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -110,8 +110,9 @@ DATABASES = {
         'PORT': config('DB_PORT', default=587, cast=int)
     }
 }
- """
-# Render DATABASES configuration with PostgreSQL:
+
+
+""" # Render DATABASES configuration with PostgreSQL:
 DATABASES = {
     'default': dj_database_url.config(
         default=config('RENDER_DATABASE_URL', default='', cast=str),
@@ -119,7 +120,7 @@ DATABASES = {
         ssl_require=True
     )
 }
-
+ """
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
