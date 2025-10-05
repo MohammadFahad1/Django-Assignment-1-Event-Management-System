@@ -4,8 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.tokens import default_token_generator
-from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm
+from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.views import LoginView
 
 # Test for users
 def is_admin(user):
@@ -27,25 +28,13 @@ def sign_up(request):
         
     return render(request, 'registration/register.html', {"form": form})
 
-def sign_in(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+class SignInView(LoginView):
+    form_class = LoginForm
 
-        if not username or not password:
-            messages.error(request, 'Please enter both username and password')
-            return redirect('sign-in')
+    def get_success_url(self):
+        next_url = self.request.GET.get('next', None)
+        return next_url if next_url else super().get_success_url()
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            messages.success(request, "Logged in successfully")
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid username or password')
-
-    return render(request, 'registration/login.html')
 
 @login_required
 def sign_out(request):
