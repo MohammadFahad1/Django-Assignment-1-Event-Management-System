@@ -1,5 +1,5 @@
 from django.urls import path
-from users.views import activate_user, create_group, sign_up, SignInView, sign_out, user_list, assign_role, group_list, delete_group
+from users.views import activate_user, create_group, sign_up, SignInView, sign_out, user_list, assign_role, group_list, delete_group, ProfileView
 from core.views import no_access
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('admin/group-list/', group_list, name='group_list'),
     path('admin/group/<int:group_id>/delete/', delete_group, name='delete-group'),
     path('activate/<int:user_id>/<str:token>/', activate_user, name="activate-user"),
+    path('profile/', ProfileView.as_view(), name="activate-user"),
 ]
