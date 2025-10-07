@@ -13,5 +13,5 @@ urlpatterns = [
     path('admin/group-list/', group_list, name='group_list'),
     path('admin/group/<int:group_id>/delete/', delete_group, name='delete-group'),
     path('activate/<int:user_id>/<str:token>/', activate_user, name="activate-user"),
-    path('profile/', ProfileView.as_view(), name="activate-user"),
+    path('profile/', ProfileView.as_view(), name="profile"),
 ]

@@ -125,8 +125,8 @@ class ProfileView(TemplateView):
         context['name'] = user.get_full_name()
         context['group'] = user.groups.first().name if user.groups.exists() else 'No Role Assigned'
         context['is_active'] = user.is_active
-        context['member_since'] = user.date_joined.strftime('%B %d, %Y')
-        context['last_login'] = user.last_login.strftime('%B %d, %Y, %I:%M %p') if user.last_login else 'First time login'
+        context['member_since'] = user.date_joined
+        context['last_login'] = user.last_login if user.last_login else 'First time login'
         context['is_staff'] = user.is_staff
         context['is_superuser'] = user.is_superuser
         
