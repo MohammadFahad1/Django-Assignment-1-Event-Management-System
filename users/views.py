@@ -36,13 +36,6 @@ class SignInView(LoginView):
         next_url = self.request.GET.get('next', None)
         return next_url if next_url else super().get_success_url()
 
-@login_required
-def sign_out(request):
-    if request.method == 'POST':
-        messages.success(request, 'Logged out successfully')
-        logout(request)
-        return redirect('sign-in')
-
 def activate_user(request, user_id, token):
     try:
         user = User.objects.get(id=user_id)
