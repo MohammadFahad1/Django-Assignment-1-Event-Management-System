@@ -183,3 +183,6 @@ FRONTEND_URL = config('FRONTEND_URL', default='http://127.0.0.1:8000', cast=str)
 # Login Urls
 LOGIN_URL = '/users/sign-in'
 LOGIN_REDIRECT_URL = '/users/profile'
+
+# Logout Redirect Url
+LOGOUT_REDIRECT_URL = '/users/sign-in'
