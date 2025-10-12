@@ -1,6 +1,6 @@
 from django import forms
 import re
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User, Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
@@ -104,3 +104,7 @@ class CreateGroupForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = Group
         fields = ['name', 'permissions']
+
+class LoginForm(StyledFormMixin, AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

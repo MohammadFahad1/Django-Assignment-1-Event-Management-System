@@ -7,6 +7,9 @@ from django.utils.timezone import now
 from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from users.views import is_admin
+from django.views.generic import ListView, UpdateView
+from django.views import View
+from django.utils.decorators import method_decorator
 
 # Test for users
 def is_admin_or_organizer(user):
@@ -155,77 +158,91 @@ def delete_participant(request, id):
     messages.success(request, 'Participant deleted successfully')
     return redirect('participant-list')
 
-@login_required
-@permission_required('events.view_category', raise_exception=False, login_url='no-access')
-def categories(request):
-    category_form = CategoryModelForm()
-    action = request.GET.get('action', 'all')
-    if action == 'add':
-        if request.method == 'POST':
-            category_form = CategoryModelForm(request.POST)
-            if category_form.is_valid():
-                category_form.save()
-                messages.success(request, 'Category added successfully')
-                return redirect("category-list")
-        return render(request, 'category_form.html', {"form": category_form})
-    
-    categories = Category.objects.prefetch_related('event_category').all().order_by('id')
-    context = {"categories": categories}
-    return render(request, 'dashboard/category_table.html', context)
+# Categories view using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('events.view_category', raise_exception=False, login_url='no-access'), name='dispatch')
+class Categories(View):
+    def get(self, request):
+        category_form = CategoryModelForm()
+        action = request.GET.get('action', 'all')
+        if action == 'add':
+            return render(request, 'category_form.html', {"form": category_form})
+        
+        categories = Category.objects.prefetch_related('event_category').all().order_by('id')
+        return render(request, 'dashboard/category_table.html', {"categories": categories})
 
-@login_required
-@permission_required('events.change_category', raise_exception=False, login_url='no-access')
-def update_category(request, id):
-    category = Category.objects.get(id=id)
-    category_form = CategoryModelForm(instance=category)
-    if request.method == 'POST':
-        category_form = CategoryModelForm(request.POST, instance=category)
+    def post(self, request):
+        category_form = CategoryModelForm(request.POST)
         if category_form.is_valid():
             category_form.save()
-            messages.success(request, "Category updated successfully")
-            return redirect('category-list')
+            messages.success(request, 'Category added successfully')
+            return redirect("category-list")
+        return render(request, 'category_form.html', {"form": category_form})
+
+
+# Update Category using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('events.change_category', raise_exception=False, login_url='no-access'), name='dispatch')
+class UpdateCategoryView(UpdateView):
+    model = Category
+    form_class = CategoryModelForm
+    template_name = 'category_form.html'
+    pk_url_kwarg = 'id'
+    context_object_name = 'form'
+    success_url = '/categories/'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Category updated successfully")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Something went wrong while updating category")
+        return super().form_invalid(form)
+
+# Delete Category using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(permission_required('events.delete_category', raise_exception=False, login_url='no-access'), name='dispatch')
+class DeleteCategoryView(View):
+    def get(self, request, id):
+        category = Category.objects.get(id=id)
+        category.delete()
+        messages.success(request, "Category deleted successfully")
+        return redirect('category-list')
+
+# RSVP using class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_participant, login_url='no-access'), name='dispatch')
+@method_decorator(permission_required('events.add_rsvp', raise_exception=False, login_url='no-access'), name='dispatch')
+class RSVPView(View):
+    def get(self, request, event_id):
+        event = Event.objects.get(id=event_id)
+        user = request.user
+
+        if RSVP.objects.filter(event=event, user=user).exists():
+            messages.error(request, 'You have already RSVPed to this event')
         else:
-            messages.error('Something went wrong while updating category')
+            rsvp_instance = RSVP.objects.create(lastUserRSVPed=user, lastEventRSVPed=event)
+            event.rsvps.add(rsvp_instance)
+            user.rsvps.add(rsvp_instance)
+            rsvp_instance.save()
 
-    return render(request, 'category_form.html', {"form": category_form})
+            event.participants.add(user)
+            messages.success(request, 'You have RSVPed to this event')
 
-@login_required
-@permission_required('events.delete_category', raise_exception=False, login_url='no-access')
-def delete_category(request, id):
-    category = Category.objects.get(id=id)
-    category.delete()
-    messages.success(request, 'Category deleted successfully')
-    return redirect('category-list')
+        return redirect('home_page')
+    
 
-@login_required
-@user_passes_test(is_participant, login_url='no-access')
-@permission_required('events.add_rsvp', raise_exception=False, login_url='no-access')
-def rsvp(request, event_id):
-    event = Event.objects.get(id=event_id)
-    user = request.user
+# RSVP List using Class based view
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(is_participant, login_url='no-access'), name='dispatch')
+class RSVPListView(ListView):
+    model = Event
+    template_name = 'dashboard/rsvp_table.html'
+    context_object_name = 'events'
 
-    # check if user has already RSVPed
-    if RSVP.objects.filter(event=event, user=user).exists():
-        messages.error(request, 'You have already RSVPed to this event')
-    else:
-        rsvp_instance = RSVP.objects.create(lastUserRSVPed=user, lastEventRSVPed=event)
-        event.rsvps.add(rsvp_instance)
-        user.rsvps.add(rsvp_instance)
-        rsvp_instance.save()
-        # Add the user to the event's participant list
-        event.participants.add(user)
-        # rsvp_instance.user.set([user])
-        # rsvp_instance.event.set([event])
-        messages.success(request, 'You have RSVPed to this event')
-    return redirect('home_page')
-
-@login_required
-@user_passes_test(is_participant, login_url='no-access')
-def rsvp_list(request):
-    user = request.user
-    # user_rsvps = user.rsvps.all()
-    rsvped_events = user.participants.all()
-    return render(request, 'dashboard/rsvp_table.html', context={"events": rsvped_events})
+    def get_queryset(self):
+        user = self.request.user
+        return user.participants.all()
 
 @login_required
 def dashboard(request):
