@@ -1,7 +1,7 @@
 {% load static %} {% comment %} Header Section Starts {% endcomment %}
 <header class="mt-3 sticky top-0 z-10 bg-black">
   <nav
-    class="text-slate-50 flex flex-col justify-between items-center md:justify-between md:flex-row sticky top-0 left-0"
+    class="text-slate-50 flex flex-col justify-between items-center md:justify-between md:flex-row md:items-center sticky top-0 left-0"
   >
     {% comment %} Logo {% endcomment %}
     <a href="/">
@@ -38,20 +38,22 @@
       <a href="{% url 'home_page' %}#contact" class="hover:text-[#CAEFD1]">CONTACT US</a>
 
       {% if request.user.is_authenticated %}
-      <a
-        href="/dashboard"
-        class="hover:text-[#CAEFD1] bg-blue-600 text-white rounded-lg px-2 py-1"
-        >DASHBOARD</a
-      >
-      <form action="{% url 'sign-out' %}" method="post">
-        {% csrf_token %}
-        <button
-          type="submit"
-          class="bg-orange-400 px-2 py-1 rounded hover:text-blue-500"
-        >
-          LOGOUT
-        </button>
-      </form>
+        <div class="flex justify-end">
+            <button href="{% url 'profile' %}" class="flex items-center gap-2 p-1 bg-white rounded-full font-bold duration-200 shadow text-black pe-2" id="profile-button" onclick="document.getElementById('profile-menu').classList.toggle('hidden')">
+                <img src="https://fahadbd.com/images/me.jpg" alt="user" class="w-8 h-8 rounded-full">
+                <span>{{ request.user.username }}</span>
+            </button>
+            <ul class="absolute top-16 mt-1 right-4 bg-white shadow rounded w-48 text-right hidden" id="profile-menu">
+                <li class="w-full text-center shadow"><a href="{% url 'profile' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Profile</a></li>
+                <li class="w-full text-center shadow"><a href="{% url 'dashboard' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Dashboard</a></li>
+                <li class="w-full text-center shadow">
+                    <form action="{% url 'sign-out' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="text-blue-500 px-2 py-2 hover:text-red-500 block w-full text-center shadow">Sign Out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
       {% else %}
       <a
         href="{% url 'sign-in' %}"

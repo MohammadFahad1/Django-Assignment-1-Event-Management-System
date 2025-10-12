@@ -96,7 +96,8 @@
                 </button>
                 <ul class="absolute top-16 mt-1 right-4 bg-white shadow rounded w-48 text-right hidden" id="profile-menu">
                     <li class="w-full text-center shadow"><a href="{% url 'profile' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Profile</a></li>
-                    {% comment %} <li><a href="{% url 'change-password' %}">Change Password</a></li> {% endcomment %}
+                    <li class="w-full text-center shadow"><a href="{% url 'dashboard' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Dashboard</a></li>
+                    <li class="w-full text-center shadow"><a href="{% url 'password-change' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Change Password</a></li>
                     <li class="w-full text-center shadow">
                         <form action="{% url 'sign-out' %}" method="post">
                             {% csrf_token %}
