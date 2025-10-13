@@ -1,6 +1,6 @@
 from django import forms
 import re
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User, Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
@@ -12,6 +12,11 @@ class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password', 'confirm_password']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = None
     
     def clean(self):
         cleaned_data = super().clean()
@@ -108,3 +113,9 @@ class CreateGroupForm(StyledFormMixin, forms.ModelForm):
 class LoginForm(StyledFormMixin, AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class PasswordChangeForm(StyledFormMixin, PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = None

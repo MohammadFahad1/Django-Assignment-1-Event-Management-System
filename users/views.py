@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
-from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm
+from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 
@@ -21,9 +21,6 @@ def sign_up(request):
         form = CustomRegistrationForm(request.POST) # Default form provided by Django
         if form.is_valid():
             form.save()
-            # user = form.save(commit=False)
-            # user.is_active = False
-            # user.save()
             messages.success(request, 'A confirmation email has been sent to your email address. Please confirm your email address to activate your account.')
             return redirect('sign-in')
         
@@ -53,6 +50,18 @@ def activate_user(request, user_id, token):
     except User.DoesNotExist:
         messages.error(request, 'Invalid activation link')
         return redirect('sign-in')
+
+@method_decorator(login_required, name='dispatch')
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = PasswordChangeForm
+    success_url = '/users/sign-in/'
+    
+
+@method_decorator(login_required, name='dispatch')
+
+class ChangePasswordDoneView(PasswordChangeDoneView):
+    template_name = 'accounts/password_change_done.html'
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
