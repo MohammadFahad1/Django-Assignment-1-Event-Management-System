@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
-from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm
+from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 
@@ -57,11 +57,9 @@ class ChangePasswordView(PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = '/users/sign-in/'
     
-
-@method_decorator(login_required, name='dispatch')
-
-class ChangePasswordDoneView(PasswordChangeDoneView):
-    template_name = 'accounts/password_change_done.html'
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    form_class = CustomPasswordResetForm
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
