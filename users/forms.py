@@ -1,6 +1,6 @@
 from django import forms
 import re
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User, Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
@@ -121,4 +121,7 @@ class PasswordChangeForm(StyledFormMixin, PasswordChangeForm):
             field.help_text = None
 
 class CustomPasswordResetForm(StyledFormMixin, PasswordResetForm):
+    pass
+
+class CustomSetPasswordForm(StyledFormMixin, SetPasswordForm):
     pass

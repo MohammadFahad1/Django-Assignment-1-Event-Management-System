@@ -3,11 +3,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
-from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm
+from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 
 # Test for users
 def is_admin(user):
@@ -60,6 +61,37 @@ class ChangePasswordView(PasswordChangeView):
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset.html'
     form_class = CustomPasswordResetForm
+    success_url = reverse_lazy('sign-in')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'An error occurred while processing your request. Please try again.')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        user = User.objects.filter(email=email).first()
+        if user and not user.is_active:
+            messages.error(self.request, 'Your account is not activated. Please activate your account first.')
+            return redirect('sign-in')
+        elif user:
+            messages.success(self.request, 'A password reset email has been sent to your email address if it exists in our system.')
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, 'No user is associated with this email address. Please try again.')
+            return redirect('sign-in')
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/confirm_password_reset.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('sign-in')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'An error occurred while processing your request. Please try again.')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password has been set. You can now log in with the new password.')
+        return super().form_valid(form)
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
