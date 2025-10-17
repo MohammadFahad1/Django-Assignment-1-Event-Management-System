@@ -6,7 +6,7 @@
     {% comment %} Logo {% endcomment %}
     <a href="/">
       <div class="text-2xl p-2 rounded-lg font-bold flex gap-2 items-center">
-        <img src="{% static 'images/logo-ev.png' %}" class="w-14" alt="">
+        <img src="{% static 'images/logo-ev.png' %}" class="w-14" alt="" />
         <h1 class="text-[#CAEFD1]">Event Horizon</h1>
       </div>
     </a>
@@ -34,26 +34,66 @@
         />
       </form>
       <a href="/" class="hover:text-[#CAEFD1]">HOME</a>
-      <a href="{% url 'home_page' %}#events" class="hover:text-[#CAEFD1]">EVENTS</a>
-      <a href="{% url 'home_page' %}#contact" class="hover:text-[#CAEFD1]">CONTACT US</a>
+      <a href="{% url 'home_page' %}#events" class="hover:text-[#CAEFD1]"
+        >EVENTS</a
+      >
+      <a href="{% url 'home_page' %}#contact" class="hover:text-[#CAEFD1]"
+        >CONTACT US</a
+      >
 
       {% if request.user.is_authenticated %}
-        <div class="flex justify-end">
-            <button href="{% url 'profile' %}" class="flex items-center gap-2 p-1 bg-white rounded-full font-bold duration-200 shadow text-black pe-2" id="profile-button" onclick="document.getElementById('profile-menu').classList.toggle('hidden')">
-                <img src="https://fahadbd.com/images/me.jpg" alt="user" class="w-8 h-8 rounded-full">
-                <span>{{ request.user.username }}</span>
-            </button>
-            <ul class="absolute top-16 mt-1 right-4 bg-white shadow rounded w-48 text-right hidden" id="profile-menu">
-                <li class="w-full text-center shadow"><a href="{% url 'profile' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Profile</a></li>
-                <li class="w-full text-center shadow"><a href="{% url 'dashboard' %}" class="text-blue-500 px-2 py-2 hover:text-red-500 block">Dashboard</a></li>
-                <li class="w-full text-center shadow">
-                    <form action="{% url 'sign-out' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="text-blue-500 px-2 py-2 hover:text-red-500 block w-full text-center shadow">Sign Out</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
+      <div class="flex justify-end">
+        <button
+          href="{% url 'profile' %}"
+          class="flex items-center gap-2 p-1 bg-white rounded-full font-bold duration-200 shadow text-black pe-2"
+          id="profile-button"
+          onclick="document.getElementById('profile-menu').classList.toggle('hidden')"
+        >
+          <img
+            src="https://fahadbd.com/images/me.jpg"
+            alt="user"
+            class="w-8 h-8 rounded-full"
+          />
+          <span>{{ request.user.username }}</span>
+        </button>
+        <ul
+          class="absolute top-16 mt-1 right-4 bg-white shadow rounded w-48 text-right hidden"
+          id="profile-menu"
+        >
+          <li class="w-full text-center shadow">
+            <a
+              href="{% url 'profile' %}"
+              class="text-blue-500 px-2 py-2 hover:text-red-500 block"
+              >Profile</a
+            >
+          </li>
+          <li class="w-full text-center shadow">
+            <a
+              href="{% url 'dashboard' %}"
+              class="text-blue-500 px-2 py-2 hover:text-red-500 block"
+              >Dashboard</a
+            >
+          </li>
+          <li class="w-full text-center shadow">
+            <a
+              href="{% url 'password-change' %}"
+              class="text-blue-500 px-2 py-2 hover:text-red-500 block"
+              >Change Password</a
+            >
+          </li>
+          <li class="w-full text-center shadow">
+            <form action="{% url 'sign-out' %}" method="post">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="text-blue-500 px-2 py-2 hover:text-red-500 block w-full text-center shadow"
+              >
+                Sign Out
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
       {% else %}
       <a
         href="{% url 'sign-in' %}"
