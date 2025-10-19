@@ -3,10 +3,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
-from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm
+from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm, EditProfileForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 
@@ -57,7 +57,24 @@ class ChangePasswordView(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = PasswordChangeForm
     success_url = '/users/sign-in/'
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class EditProfileView(UpdateView):
+    model = User
+    form_class = EditProfileForm
+    template_name = 'accounts/edit_profile.html'
+    context_object_name = 'form'
+
+    def get_object(self):
+        return self.request.user
     
+    def form_valid(self, form):
+        messages.success(self.request, 'Your profile has been updated successfully.')
+        form.save(commit=True)
+        return redirect('profile')
+
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset.html'
     form_class = CustomPasswordResetForm
@@ -163,5 +180,8 @@ class ProfileView(TemplateView):
         context['last_login'] = user.last_login if user.last_login else 'First time login'
         context['is_staff'] = user.is_staff
         context['is_superuser'] = user.is_superuser
+        context['phone'] = user.userprofile.phone
+        context['location'] = user.userprofile.location
+        context['profile_image'] = user.userprofile.profile_image
         
         return context

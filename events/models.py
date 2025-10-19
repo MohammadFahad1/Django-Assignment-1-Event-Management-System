@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from psycopg2 import Timestamp
+from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=100)

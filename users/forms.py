@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.contrib.auth.models import User, Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
+from users.models import CustomUser
 
 class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -125,3 +126,8 @@ class CustomPasswordResetForm(StyledFormMixin, PasswordResetForm):
 
 class CustomSetPasswordForm(StyledFormMixin, SetPasswordForm):
     pass
+
+class EditProfileForm(StyledFormMixin, forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'phone', 'location', 'profile_image']

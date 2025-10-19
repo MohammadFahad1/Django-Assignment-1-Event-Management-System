@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <title>EVMS - Update Profile</title>
+  </head>
+  <body class="px-5 bg-black">
+    {% include 'header_navbar.html' %}
+    <div class="max-w-[500px] mx-auto p-6 bg-gray-300 rounded-lg mt-10">
+      {% comment %} Sign In Form Section Starts {% endcomment %}
+      <h1 class="text-3xl font-bold mb-4">Update Profile Information</h1>
+      <ul>
+        {% for message in messages %}
+        <li
+          class="{% if message.tags == 'error' %}text-red-500{% endif %} {% if message.tags == 'success' %}text-green-500{% endif %} font-bold text-xl"
+        >
+          {{message}}
+        </li>
+        {% endfor %}
+      </ul>
+      
+      {% for error in form.non_field_errors %}
+        <div class="text-red-500 font-bold mb-2">
+          {{ error }}
+        </div>
+      {% endfor %}
+        
+      <form action="" method="post" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+        
+        {% for field in form %}
+          {% if field.errors %}
+            <div class="text-red-500 mb-2">{{ field.errors|striptags }}</div>
+          {% endif %}
+          <div class="mb-4">
+            <label for="{{ field.id_for_label }}" class="block font-bold mb-1">{% if field.field.required %}{% endif %}{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+              <p class="text-sm text-gray-600">{{ field.help_text }}</p>
+            {% endif %}
+          </div> 
+        {% endfor %}
+          
+        <button
+          type="submit"
+          class="py-2 px-4 bg-[#CAEFD1] text-black rounded mt-2 border-2 border-[#017015]"
+        >
+          Update
+        </button>
+      </form>
+    </div>
+    {% include 'footer.html' %}
+  </body>
+</html>

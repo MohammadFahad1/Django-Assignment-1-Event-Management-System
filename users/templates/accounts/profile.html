@@ -8,7 +8,7 @@
             <a href="" class="hover:text-blue-600 transition duration-300 font-medium mb-5">
                 Profile
             </a>
-            <a href="" class="hover:text-blue-600 transition duration-300 font-medium mb-5">
+            <a href="{% url 'edit-profile' %}" class="hover:text-blue-600 transition duration-300 font-medium mb-5">
                 Edit Profile
             </a>
             <a href="" class="hover:text-blue-600 transition duration-300 font-medium mb-5">
@@ -17,9 +17,22 @@
         </div>
     </div>
     <div class="w-2/3 mx-auto shadow-md p-8 rounded-lg">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <p class="
+                {% if message.tags == 'success' %}
+                    bg-lime-400 text-green-700 font-bold text-lg px-5 py-3
+                {% else %}
+                    bg-red-400 text-red-700 font-bold text-lg px-5 py-3
+                {% endif %} my-5
+                    ">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+            
         <img class="profile-img w-32 h-32 rounded-full mx-auto mb-6 object-cover" 
-            src="https://via.placeholder.com/128/E5E7EB/1F2937?text=A" 
-            alt="Profile Picture of Alex">
+            src="{{profile_image.url}}" 
+            alt="Profile Picture of {{ name }}">
 
         <h1 class="text-3xl font-semibold text-gray-800 mb-1">
             {{ name }}
@@ -28,12 +41,10 @@
             {{ username }} | {{ email }}
         </h2>
         <h3 class="text-lg font-light text-gray-500 mb-18"><b>Your role:</b> {{group}}</h3>
+        <h3 class="text-lg font-light text-gray-500 mb-18"><b>Phone Number:</b> {{phone}}</h3>
+        <p class="text-sm font-light text-gray-500 mb-18"><b>Location:</b> {{location}}</p>
         <p class="text-sm font-light text-gray-500 mb-18"><b>Member since:</b> {{member_since|formatted_date}}</p>
         <p class="text-sm font-light text-gray-500 mb-5"><b>Last Login:</b> {{last_login|formatted_date}}</p>
-
-        <p class="text-gray-600 mb-8 leading-relaxed max-w-xs mx-auto">
-            Passionate about **clean design**, elegant code, and the power of less. I focus on simplicity and clarity in every project.
-        </p>
     </div>
 </div>
 {% endblock content %}

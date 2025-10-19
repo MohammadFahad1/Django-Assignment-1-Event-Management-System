@@ -9,8 +9,7 @@ def formatted_date(value):
         return 'N/A'
     today = datetime.now().date()
     value = timezone.localtime(value)
-
-    print(value.date(), today)
+    
     if value.date() == today:
         return value.strftime('Today at %I:%M %p')
     elif value.date() == today - timedelta(days=1):
