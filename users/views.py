@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
 from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm, EditProfileForm
@@ -9,6 +9,9 @@ from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordCha
 from django.views.generic import TemplateView, UpdateView
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Test for users
 def is_admin(user):
@@ -180,8 +183,8 @@ class ProfileView(TemplateView):
         context['last_login'] = user.last_login if user.last_login else 'First time login'
         context['is_staff'] = user.is_staff
         context['is_superuser'] = user.is_superuser
-        context['phone'] = user.userprofile.phone
-        context['location'] = user.userprofile.location
-        context['profile_image'] = user.userprofile.profile_image
+        context['phone'] = user.phone
+        context['location'] = user.location
+        context['profile_image'] = user.profile_image
         
         return context

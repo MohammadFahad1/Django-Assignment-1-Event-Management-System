@@ -1,10 +1,13 @@
 from django import forms
 import re
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
-from django.contrib.auth.models import User, Permission, Group
+from django.contrib.auth.models import Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
 from users.models import CustomUser
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -131,3 +134,6 @@ class EditProfileForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'phone', 'location', 'profile_image']
+        widgets = {
+            'phone': forms.TextInput(attrs={'type': 'tel'})
+        }
