@@ -1,9 +1,13 @@
 from django import forms
 import re
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User, Permission, Group
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.models import Permission, Group
 from django.core.validators import validate_email
 from events.forms import StyledFormMixin
+from users.models import CustomUser
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -12,6 +16,11 @@ class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password', 'confirm_password']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = None
     
     def clean(self):
         cleaned_data = super().clean()
@@ -108,3 +117,23 @@ class CreateGroupForm(StyledFormMixin, forms.ModelForm):
 class LoginForm(StyledFormMixin, AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class PasswordChangeForm(StyledFormMixin, PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = None
+
+class CustomPasswordResetForm(StyledFormMixin, PasswordResetForm):
+    pass
+
+class CustomSetPasswordForm(StyledFormMixin, SetPasswordForm):
+    pass
+
+class EditProfileForm(StyledFormMixin, forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'phone', 'location', 'profile_image']
+        widgets = {
+            'phone': forms.TextInput(attrs={'type': 'tel'})
+        }

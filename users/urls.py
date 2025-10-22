@@ -1,7 +1,7 @@
 from django.urls import path
-from users.views import activate_user, create_group, sign_up, SignInView, user_list, assign_role, group_list, delete_group, ProfileView
+from users.views import activate_user, create_group, sign_up, SignInView, user_list, assign_role, group_list, delete_group, ProfileView, ChangePasswordView, CustomPasswordResetView, CustomPasswordResetConfirmView, EditProfileView
 from core.views import no_access
-from django.contrib.auth.views import LogoutView, PasswordChangeView, PasswordChangeDoneView
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('sign-up/', sign_up, name="sign-up"),
@@ -15,6 +15,8 @@ urlpatterns = [
     path('admin/group/<int:group_id>/delete/', delete_group, name='delete-group'),
     path('activate/<int:user_id>/<str:token>/', activate_user, name="activate-user"),
     path('profile/', ProfileView.as_view(), name="profile"),
-    path('password-change/', PasswordChangeView.as_view(template_name="accounts/password_change.html"), name="password-change"),
-    path('password-change/done/', PasswordChangeDoneView.as_view(), name="password-change-done")
+    path('password-change/', ChangePasswordView.as_view(), name="password-change"),
+    path('password-reset/', CustomPasswordResetView.as_view(), name="password-reset"),
+    path('password-reset/confirm/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('edit-profile/', EditProfileView.as_view(), name='edit-profile')
 ]

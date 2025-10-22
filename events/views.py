@@ -10,6 +10,9 @@ from users.views import is_admin
 from django.views.generic import ListView, UpdateView
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Test for users
 def is_admin_or_organizer(user):

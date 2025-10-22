@@ -2,8 +2,10 @@ from django import forms
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
 from events.models import *
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class StyledFormMixin:
     def __init__(self, *arg, **kwarg):

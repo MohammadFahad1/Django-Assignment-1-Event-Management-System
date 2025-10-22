@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
-from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm
+from users.forms import CreateGroupForm, CustomRegistrationForm, AssignRoleForm, LoginForm, PasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm, EditProfileForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetConfirmView
+from django.views.generic import TemplateView, UpdateView
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Test for users
 def is_admin(user):
@@ -21,9 +25,6 @@ def sign_up(request):
         form = CustomRegistrationForm(request.POST) # Default form provided by Django
         if form.is_valid():
             form.save()
-            # user = form.save(commit=False)
-            # user.is_active = False
-            # user.save()
             messages.success(request, 'A confirmation email has been sent to your email address. Please confirm your email address to activate your account.')
             return redirect('sign-in')
         
@@ -53,6 +54,66 @@ def activate_user(request, user_id, token):
     except User.DoesNotExist:
         messages.error(request, 'Invalid activation link')
         return redirect('sign-in')
+
+@method_decorator(login_required, name='dispatch')
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = PasswordChangeForm
+    success_url = '/users/sign-in/'
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class EditProfileView(UpdateView):
+    model = User
+    form_class = EditProfileForm
+    template_name = 'accounts/edit_profile.html'
+    context_object_name = 'form'
+
+    def get_object(self):
+        return self.request.user
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Your profile has been updated successfully.')
+        form.save(commit=True)
+        return redirect('profile')
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    form_class = CustomPasswordResetForm
+    success_url = reverse_lazy('sign-in')
+    html_email_template_name = 'registration/reset_email.html'
+    title = 'Event Horizon Password Reset Request'
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'An error occurred while processing your request. Please try again.')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        user = User.objects.filter(email=email).first()
+        if user and not user.is_active:
+            messages.error(self.request, 'Your account is not activated. Please activate your account first.')
+            return redirect('sign-in')
+        elif user:
+            messages.success(self.request, 'A password reset email has been sent to your email address.')
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, 'No user is associated with this email address. Please try again.')
+            return redirect('sign-in')
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/confirm_password_reset.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('sign-in')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'An error occurred while processing your request. Please try again.')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password has been set. You can now log in with the new password.')
+        return super().form_valid(form)
 
 @login_required
 @user_passes_test(is_admin, login_url='no-access')
@@ -122,5 +183,8 @@ class ProfileView(TemplateView):
         context['last_login'] = user.last_login if user.last_login else 'First time login'
         context['is_staff'] = user.is_staff
         context['is_superuser'] = user.is_superuser
+        context['phone'] = user.phone
+        context['location'] = user.location
+        context['profile_image'] = user.profile_image
         
         return context
