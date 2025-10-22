@@ -13,7 +13,7 @@ def send_activation_email(sender, instance, created, **kwargs):
     if created:
         # Assign a default role to the user
         instance.groups.clear()
-        instance.groups.add(Group.objects.get(name='Participant'))
+        instance.groups.add(Group.objects.get_or_create(name='Participant'))
 
         # Generate activation token
         token = default_token_generator.make_token(instance)
