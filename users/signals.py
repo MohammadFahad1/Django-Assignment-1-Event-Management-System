@@ -25,6 +25,6 @@ def send_activation_email(sender, instance, created, **kwargs):
         recipient_list = [instance.email]
 
         try:
-            send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
+            send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list, fail_silently=False)
         except Exception as e:
             print(f"Failed to send mail to {instance.email}: {str(e)}")
