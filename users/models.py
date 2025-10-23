@@ -7,4 +7,4 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return f"{self.username}'s User Profile"
+        return self.username
