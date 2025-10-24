@@ -233,7 +233,6 @@ class RSVPView(View):
             messages.success(request, 'You have RSVPed to this event')
 
         return redirect('home_page')
-    
 
 # RSVP List using Class based view
 @method_decorator(login_required, name='dispatch')
